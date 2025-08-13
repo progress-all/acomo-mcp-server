@@ -3,7 +3,9 @@ import { getConfig } from "./config.js";
 
 export async function acomoFetch(path: string, init?: RequestInit) {
   const cfg = getConfig();
-  const url = `${cfg.baseUrl}/${cfg.apiVersion}${path}`;
+  const base = cfg.baseUrl.replace(/\/$/, "");
+  const joined = `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+  const url = joined;
   const headers = {
     ...(init?.headers as Record<string, string>),
     Authorization: cfg.token

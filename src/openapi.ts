@@ -69,16 +69,10 @@ export async function findOperationById(
 }
 
 export function buildUrlForOpenApiPath(openapiPath: string): string {
-  // cfg.baseUrl example: http://localhost:3000/api
+  // cfg.baseUrl example: http://localhost:3000
   const cfg = getConfig();
-  const base = cfg.baseUrl;
-  if (openapiPath.startsWith("/api/")) {
-    // remove trailing /api from base
-    const origin = base.replace(/\/?api$/, "");
-    return `${origin}${openapiPath}`;
-  }
-  // otherwise, join with base + version
-  return `${base}/${cfg.apiVersion}${openapiPath.startsWith("/") ? "" : "/"}${openapiPath}`;
+  const base = cfg.baseUrl.replace(/\/$/, "");
+  return `${base}${openapiPath.startsWith("/") ? "" : "/"}${openapiPath}`;
 }
 
 // ----- Components (DTO/Entity Schemas) -----

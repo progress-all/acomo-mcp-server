@@ -1,6 +1,5 @@
 export type AcomoMcpConfig = {
   baseUrl: string;
-  apiVersion: string;
   tenantId: string;
   token?: string;
   clientId?: string;
@@ -12,8 +11,7 @@ export type AcomoMcpConfig = {
 };
 
 export function getConfig(): AcomoMcpConfig {
-  const baseUrl = process.env.ACOMO_API_BASE ?? "http://localhost:3000/api";
-  const apiVersion = process.env.ACOMO_API_VERSION ?? "v1";
+  const baseUrl = process.env.ACOMO_API_BASE ?? "https://acomo.app";
   const tenantId = required("ACOMO_TENANT_ID");
   const token = process.env.ACOMO_ACCESS_TOKEN;
   const clientId = process.env.ACOMO_CLIENT_ID;
@@ -29,7 +27,6 @@ export function getConfig(): AcomoMcpConfig {
     `${process.cwd()}/acomo-backend/openapi.json`;
   return {
     baseUrl,
-    apiVersion,
     tenantId,
     token,
     clientId,

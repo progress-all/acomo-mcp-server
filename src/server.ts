@@ -195,7 +195,8 @@ async function main() {
           encodeURIComponent(String(v))
         );
       }
-      const urlPath = buildUrlForOpenApiPath(path);
+      // base + OpenAPI のパスをそのまま連結するため、OpenAPI の先頭 `/api/v{n}` はそのまま使用する。
+      const normalizedPath = path;
       const qs = new URLSearchParams();
       if (query) {
         for (const [k, v] of Object.entries(query as Record<string, any>)) {
@@ -204,7 +205,7 @@ async function main() {
       }
       const search = qs.toString() ? `?${qs.toString()}` : "";
       const res = await acomoFetch(
-        `${urlPath.replace(/^.*\/(api\/v\d+)/, "/$1")}${search}`,
+        `${normalizedPath}${search}`,
         { method: op.method, body: body ? JSON.stringify(body) : undefined }
       );
       return { content: [{ type: "text", text: JSON.stringify(res) }] };
