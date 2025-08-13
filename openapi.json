@@ -1,0 +1,7713 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/authentication/signin": {
+      "post": {
+        "operationId": "signInWithEmailAndPassword",
+        "summary": "メールアドレスとパスワードでサインインする。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "サインインに成功した場合、アクセストークンを含むセッション情報を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authentication/session": {
+      "get": {
+        "operationId": "getSession",
+        "summary": "現在サインイン中のセッション情報を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "現在サインイン中のセッション情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authentication/signout": {
+      "post": {
+        "operationId": "signOut",
+        "summary": "サインアウトする（現在のセッションを破棄する）。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "サインアウトに成功した場合、{ \"status\": \"Success\" }を返却する。"
+          },
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          },
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authentication/userAuthInfo": {
+      "get": {
+        "operationId": "getMyUserAuthInfo",
+        "summary": "自分自身のユーザー認証情報を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分自身のユーザー認証情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAuthInfoEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          },
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authentication/createResetPasswordLink": {
+      "post": {
+        "operationId": "createResetPasswordLink",
+        "summary": "パスワードをリセットする。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "パスワードをリセットするためのURLを発行する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          },
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authentication/sendInitializePasswordEmail": {
+      "post": {
+        "operationId": "sendInitializeMyPasswordEmail",
+        "summary": "自身のパスワードログインアカウントを作成し、初期パスワードをメールで送信する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "パスワードを設定するためのURLを発行する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          },
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authentication/sendInitializePasswordEmail/{email}": {
+      "post": {
+        "operationId": "sendInitializePasswordEmail",
+        "summary": "パスワードログインを設定していないユーザーのアカウントを作成し、初期パスワードをメールで送信する。",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "パスワードを設定するためのURLを発行する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          },
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account": {
+      "get": {
+        "operationId": "getAccount",
+        "summary": "自分のアカウント情報を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分のアカウント情報をを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/my/organization": {
+      "get": {
+        "operationId": "getMyOrganization",
+        "summary": "自分の組織情報を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分のアカウントがオーナーである組織情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createMyOrganization",
+        "summary": "自分の組織を作成する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "作成した組織情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateMyOrganization",
+        "summary": "自分の組織を更新する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrganizationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新した組織情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/tenants": {
+      "get": {
+        "operationId": "getMyTenants",
+        "summary": "自分のアカウントのメールアドレスを持つユーザーが登録されているテナント情報を全て取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分のアカウントのメールアドレスを持つユーザーが登録されているテナント情報を全件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TenantEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/tenants/signInMethod": {
+      "get": {
+        "operationId": "getMyTenantsWithSignInMethod",
+        "summary": "自分のアカウントのメールアドレスを持つユーザーが登録されているテナント情報とログイン方法を全て取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分のアカウントのメールアドレスを持つユーザーが登録されているテナント情報とログイン方法を全件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TenantWithSignInMethodEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/my/organization/tenants": {
+      "get": {
+        "operationId": "listMyOrganizationsTenants",
+        "summary": "自分の組織に紐づくテナント情報を全て取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分の組織に紐づくテナント情報を全件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TenantEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createMyOrganizationsTenant",
+        "summary": "自分の組織に紐づくテナントを1件登録する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTenantDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "登録したテナント情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/my/organization/tenants/{tenantId}": {
+      "get": {
+        "operationId": "getMyOrganizationsTenant",
+        "summary": "自分の組織に紐づくテナントを1件取得する。",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "テナント情報を1件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateMyOrganizationsTenant",
+        "summary": "自分の組織に紐づくテナントを1件更新する。",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTenantDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新したテナント情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteMyOrganizationsTenant",
+        "summary": "自分の組織に紐づくテナントを1件削除する。",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "自分の組織に紐づくテナントを1件削除する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/my/organization/tenants/{tenantId}/plan": {
+      "get": {
+        "operationId": "getMyOrganizationsTenantPlanStatus",
+        "summary": "自分の組織に紐づくテナント1件のプラン状況を取得する。",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "テナントのプラン状況を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/my/organization/subscriptions/enable": {
+      "post": {
+        "operationId": "enableMySubscriptions",
+        "summary": "自分の組織に紐づくサブスクリプション機能を有効化します。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "サブスクリプション機能有効化後の組織情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/my/organization/subscriptions": {
+      "get": {
+        "operationId": "getMySubscriptions",
+        "summary": "自分の組織に紐づくサブスクリプションを全て取得する。",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "自分の組織に紐づくサブスクリプションを全件返却する。"
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/my/organization/subscriptions/portal": {
+      "post": {
+        "operationId": "getMySubscriptionsCustomerPortalUrl",
+        "summary": "自分の組織に紐づくサブスクリプションと請求詳細を管理するためのカスタマーポータルのURLを発行する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerPortalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "カスタマーポータルのURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/my/organization/subscriptions/checkout": {
+      "post": {
+        "operationId": "getMySubscriptionsCheckoutUrl",
+        "summary": " 自分の組織に紐づくサブスクリプションをチェックアウトするためのページのURLを発行する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "チェックアウトのURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/subscriptions": {
+      "get": {
+        "operationId": "listMySubscriptions",
+        "summary": "自分のアカウントに紐づくサブスクリプション一覧を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分のアカウントに紐づくサブスクリプションを全件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubscriptionEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/subscriptions/tenantPlanStatus/{authTenantId}": {
+      "get": {
+        "operationId": "getTenantPlanStatus",
+        "summary": "利用した無料トライアルのサブスクリプションを取得する",
+        "parameters": [
+          {
+            "name": "authTenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "利用した無料サブスクリプションを最大1件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantPlanStatusEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/subscriptions/trial": {
+      "get": {
+        "operationId": "getMyTrialSubscription",
+        "summary": "利用した無料トライアルのサブスクリプションを取得する",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "利用した無料サブスクリプションを最大1件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubscriptionEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/subscriptions/plans": {
+      "get": {
+        "operationId": "listMyPlans",
+        "summary": "プラン一覧を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "カスタマーポータルのURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubscriptionEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/subscriptions/checkout": {
+      "post": {
+        "operationId": "getMyCheckoutUrl",
+        "summary": " 顧客がチェックアウトするためのページのURLを発行する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "カスタマーポータルのURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/subscriptions/portal": {
+      "post": {
+        "operationId": "getMyCustomerPortalUrl",
+        "summary": "顧客が各自でサブスクリプションと請求詳細を管理するためのカスタマーポータルのURLを発行する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerPortalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "カスタマーポータルのURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authConfig/identityProviders": {
+      "get": {
+        "operationId": "getIdentityProviders",
+        "summary": "テナントの認証プロバイダー情報を取得する。",
+        "parameters": [
+          {
+            "name": "authTenantId",
+            "required": true,
+            "in": "query",
+            "description": "AuthテナントID",
+            "example": "mytenant-xhwpda",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "テナントの認証プロバイダー情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TenantIdentityProviderEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AuthConfig"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "createOrUpdateAuthConfigsIdentityProvider",
+        "summary": "テナントの認証設定にカスタム認証プロバイダーを登録・更新する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateIdentityProviderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "認証プロバイダー登録・更新後の認証設定情報を返却する。"
+          }
+        },
+        "tags": [
+          "AuthConfig"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authConfig": {
+      "get": {
+        "operationId": "getAuthConfig",
+        "summary": "テナントの認証設定情報を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "テナントの認証設定情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthConfigEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AuthConfig"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/authConfig/identityProviders/{thirdPartyId}": {
+      "get": {
+        "operationId": "getIdentityProvider",
+        "summary": "テナントの認証設定から指定したカスタム認証プロバイダーを返却する。",
+        "parameters": [
+          {
+            "name": "thirdPartyId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したカスタム認証プロバイダーを返却する。"
+          }
+        },
+        "tags": [
+          "AuthConfig"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteAuthConfigsIdentityProvider",
+        "summary": "テナントの認証設定から指定したカスタム認証プロバイダーを削除する。",
+        "parameters": [
+          {
+            "name": "thirdPartyId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "認証プロバイダー削除後の認証設定情報を返却する。"
+          }
+        },
+        "tags": [
+          "AuthConfig"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/profile/user": {
+      "get": {
+        "operationId": "getCurrentUser",
+        "summary": "自分自身のユーザー情報を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分自身のユーザー情報を取得する。"
+          }
+        },
+        "tags": [
+          "Profile"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/profile/tenant": {
+      "get": {
+        "operationId": "getCurrentTenant",
+        "summary": "自分自身がいまサインインしているテナント情報を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "自分自身がいまログインしているテナントを1件返却する。"
+          }
+        },
+        "tags": [
+          "Profile"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "operationId": "listUsers",
+        "summary": "ユーザー一覧を取得する。",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ユーザーを全件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListUsersResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createUser",
+        "summary": "ユーザーを1件登録する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "登録したユーザーを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users/{userId}": {
+      "get": {
+        "operationId": "getUser",
+        "summary": "ユーザーを1件取得する。",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのユーザーを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateUser",
+        "summary": "ユーザーを1件更新する。",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "更新したユーザーを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users/{userId}/userAuthInfo": {
+      "get": {
+        "operationId": "getUserAuthInfo",
+        "summary": "ユーザー認証情報を1件取得する。",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのユーザー認証情報を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAuthInfoEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users/{userId}/groups": {
+      "get": {
+        "operationId": "listGroupsByUser",
+        "summary": "ユーザーが所属するグループ一覧を取得する。",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したユーザーが所属するグループを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListGroupsResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users/{userId}/roles": {
+      "get": {
+        "operationId": "listRolesByUser",
+        "summary": "ユーザーが持つロール一覧を取得する。",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したユーザーが持つロールを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListRolesResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/roles": {
+      "get": {
+        "operationId": "listRoles",
+        "summary": "ロール一覧を取得する。",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ロールを全件取得する",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListRolesResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Role"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createRole",
+        "summary": "ロールを1件登録する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "登録したロールを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Role"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/roles/{roleId}": {
+      "get": {
+        "operationId": "getRole",
+        "summary": "ロールを1件取得する。",
+        "parameters": [
+          {
+            "name": "roleId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのロールを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Role"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateRole",
+        "summary": "ロールを1件更新する。",
+        "parameters": [
+          {
+            "name": "roleId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "更新したロールを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Role"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/groups": {
+      "get": {
+        "operationId": "listGroups",
+        "summary": "グループ一覧を取得する。",
+        "parameters": [
+          {
+            "name": "parentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定した親グループを持つグループを全件返却する。親グループを指定しない場合は全件取得する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListGroupsResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Group"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createGroup",
+        "summary": "グループを1件登録する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "登録したグループを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Group"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/groups/root": {
+      "get": {
+        "operationId": "getRootGroup",
+        "summary": "ルートグループを取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ルートグループを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Group"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/groups/{groupId}": {
+      "get": {
+        "operationId": "getGroup",
+        "summary": "グループを1件取得する。",
+        "parameters": [
+          {
+            "name": "groupId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのグループを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Group"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateGroup",
+        "summary": "グループを1件更新する。",
+        "parameters": [
+          {
+            "name": "groupId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "更新したグループを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Group"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/models": {
+      "get": {
+        "operationId": "listWorkflowModels",
+        "summary": "ワークフローモデル一覧を取得する。",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ワークフローモデルを全件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListWorkflowModelsResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createWorkflowModel",
+        "summary": "ワークフローモデルを1件登録する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateModelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登録したワークフローモデルを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowModelEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowModelEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/models/{modelId}": {
+      "get": {
+        "operationId": "getWorkflowModel",
+        "summary": "公開中のワークフローモデルを1件取得する。公開中のモデルがない場合は、モデル定義は空になる。",
+        "parameters": [
+          {
+            "name": "modelId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのワークフローモデルを公開中の定義で返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowModelEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "saveWorkflowModel",
+        "summary": "ワークフローモデルを1件保存する。",
+        "parameters": [
+          {
+            "name": "modelId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateModelDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "保存したワークフローモデルを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowModelEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteWorkflowModel",
+        "summary": "ワークフローモデルを1件削除する。",
+        "parameters": [
+          {
+            "name": "modelId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "削除したワークフローモデルを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowModelEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/models/{modelId}/edit": {
+      "get": {
+        "operationId": "getWorkflowModelWithLatestModelHistory",
+        "summary": "編集中のワークフローモデルを1件取得する。",
+        "parameters": [
+          {
+            "name": "modelId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのワークフローモデルを編集中の定義で返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowModelEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/models/{modelId}/publish": {
+      "put": {
+        "operationId": "publishWorkflowModel",
+        "summary": "ワークフローモデルを1件公開する。",
+        "parameters": [
+          {
+            "name": "modelId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "公開したワークフローモデルを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowModelEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/models/{modelId}/histories": {
+      "get": {
+        "operationId": "listModelHistories",
+        "summary": "ワークフローモデル履歴を取得する",
+        "parameters": [
+          {
+            "name": "modelId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのワークフローモデルの履歴差分を返却する",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkflowModelEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/models/convertExpression/{expressionString}": {
+      "get": {
+        "operationId": "convertExpression",
+        "summary": "文字列をexpressionに変換します。",
+        "parameters": [
+          {
+            "name": "expressionString",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "expressionを返却する。"
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/models/validate/{expressionJson}": {
+      "get": {
+        "operationId": "validateExpression",
+        "summary": "expressionが正しいかを返します。",
+        "parameters": [
+          {
+            "name": "expressionJson",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "expressionを返却する。"
+          }
+        },
+        "tags": [
+          "Model"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/processes": {
+      "get": {
+        "operationId": "listWorkflowProcesses",
+        "summary": "ワークフロープロセス一覧を取得する。",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ワークフロープロセスを全件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListWorkflowProcessesResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/processes/{processId}": {
+      "get": {
+        "operationId": "getWorkflowProcess",
+        "summary": "ワークフロープロセスを1件取得する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのワークフロープロセスを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteWorkflowProcess",
+        "summary": "ワークフロープロセスを1件削除する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "削除したワークフロープロセスを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateWorkflowProcess",
+        "summary": "ワークフロープロセスを1件保存する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProcessDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "保存したワークフロープロセスを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/processes/{processId}/histories": {
+      "get": {
+        "operationId": "listWorkflowProcessHistories",
+        "summary": "指定したIDのワークフロープロセスに関連するワークフロープロセス履歴一覧を取得する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのワークフロープロセスに関連するワークフロープロセス履歴全件を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkflowProcessEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/processes/{processId}/diffs": {
+      "get": {
+        "operationId": "getDiffs",
+        "summary": "指定したIDのワークフロープロセスに関連する履歴の差分を取得する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのワークフロープロセスを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessHistoryDiffEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/processes/{processId}/files/upload": {
+      "post": {
+        "operationId": "uploadProcessDataFile",
+        "summary": "プロセスデータに紐づいたファイルをアップロードする",
+        "description": "業務管理者向けプロセスファイルアップロードAPI",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProcessFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "プロセスデータの更新結果を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Promise"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/processes/{processId}/files/getDownloadUrl": {
+      "post": {
+        "operationId": "getProcessDataFileDownloadUrl",
+        "summary": "指定したファイルの一時ダウンロードURLを発行する（有効期限15分）",
+        "description": "業務管理者向けプロセスファイルダウンロードAPI",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "disposition",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProcessFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "指定したファイルの一時ダウンロードURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/processes/{processId}/files/delete": {
+      "post": {
+        "operationId": "deleteProcessDataFile",
+        "summary": "プロセスデータに紐づいた指定のファイルを削除する",
+        "description": "業務管理者向けプロセスファイル削除API",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProcessFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "プロセスデータの更新結果を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Promise"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Process"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/actions/systemActionPolicies": {
+      "get": {
+        "operationId": "listSystemActionPolicies",
+        "summary": "ユーザーが持つシステム実行ポリシーを一覧で取得する。",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "maxLength": 256,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "システム実行ポリシーを一覧で返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SystemActionPoliciesEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Action"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/actions/processes": {
+      "get": {
+        "operationId": "listUserProcessWithNodeActions",
+        "summary": "権限を持つプロセスの一覧をアクション可能なノードとアクションと併せて取得する。",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "maxLength": 256,
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "maxLength": 256,
+              "enum": [
+                "manage",
+                "read",
+                "start",
+                "submit",
+                "approve",
+                "reject",
+                "revert"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "プロセスの一覧をアクション可能なノードとアクションと併せて返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessWithNodeActionsEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Action"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/actions/models": {
+      "get": {
+        "operationId": "listUserModelWithNodeActions",
+        "summary": "ユーザーが権限を持つモデルの一覧をアクション可能なノードとアクションと併せて取得する。",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "maxLength": 256,
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "maxLength": 256,
+              "enum": [
+                "manage",
+                "read",
+                "start",
+                "submit",
+                "approve",
+                "reject",
+                "revert"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "モデルの一覧をアクション可能なノードとアクションと併せて取得する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ModelWithNodeActionsEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Action"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ai/chat": {
+      "post": {
+        "operationId": "chatForWorkflowModeling",
+        "summary": "AIにチャットメッセージを送信し、ワークフローモデルのワークフロー定義とデータスキーマ生成を依頼する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatAiDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "自動生成したワークフローモデルのワークフロー定義とデータスキーマを含む、チャットメッセージの応答を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatAiResponseEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatAiResponseEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ai"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ai/definition": {
+      "post": {
+        "operationId": "askAiForModelDefinition",
+        "summary": "AIにワークフローモデルのワークフロー定義の生成を依頼する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskAiForDefintionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "自動生成したワークフローモデルのワークフロー定義を1件返却する。"
+          },
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Ai"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ai/dataSchema": {
+      "post": {
+        "operationId": "askAiForDataSchema",
+        "summary": "AIにワークフローモデルのデータスキーマの生成を依頼する。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskAiForDataSchemaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "自動生成したワークフローモデルのデータスキーマを1件返却する。"
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ai"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/development/apis": {
+      "get": {
+        "operationId": "listApis",
+        "summary": "API一覧を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "APIを全件返却する。"
+          }
+        },
+        "tags": [
+          "Development"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/start/{modelId}": {
+      "post": {
+        "operationId": "startWorkflowProcess",
+        "summary": "指定したワークフローモデルのプロセスを新規に開始する。",
+        "parameters": [
+          {
+            "name": "modelId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "開始したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/submit/{processId}": {
+      "post": {
+        "operationId": "submitWorkflowProcess",
+        "summary": "指定したワークフロープロセスに対し、提出のアクションを実行する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "提出したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/approve/{processId}": {
+      "post": {
+        "operationId": "approveWorkflowProcess",
+        "summary": "指定したワークフロープロセスに対し、承認のアクションを実行する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "承認したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/reject/{processId}": {
+      "post": {
+        "operationId": "rejectWorkflowProcess",
+        "summary": "指定したワークフロープロセスに対し、却下のアクションを実行する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "却下したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/submit/{processId}/{nodeId}": {
+      "post": {
+        "operationId": "submitWorkflowProcessWithNodeId",
+        "summary": "指定したワークフロープロセスに対し、提出のアクションを実行する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "提出したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/approve/{processId}/{nodeId}": {
+      "post": {
+        "operationId": "approveWorkflowProcessWithNodeId",
+        "summary": "指定したワークフロープロセスに対し、承認のアクションを実行する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "承認したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/reject/{processId}/{nodeId}": {
+      "post": {
+        "operationId": "rejectWorkflowProcessWithNodeId",
+        "summary": "指定したワークフロープロセスに対し、却下のアクションを実行する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "却下したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/revert/{processId}/{nodeId}": {
+      "post": {
+        "operationId": "revertWorkflowProcess",
+        "summary": "指定したワークフロープロセスに対し、取り戻しのアクションを実行する",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取り戻したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/save/{processId}": {
+      "put": {
+        "operationId": "saveWorkflowProcess",
+        "summary": "指定したワークフロープロセスのプロセスデータを保存する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "保存したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/engine/save/{processId}/{nodeId}": {
+      "put": {
+        "operationId": "saveWorkflowProcessWithNodeId",
+        "summary": "指定したワークフロープロセスのプロセスデータを保存する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "保存したワークフロープロセス1件を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Engine"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/slack/install": {
+      "post": {
+        "operationId": "installSlackApp",
+        "summary": "Slack OAuth 2.0",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "SlackとOAuth2.0での認証フローで検証を行った上で、acomo Slack appをワークスペースにインストールする",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Slack"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/slack/revoke": {
+      "post": {
+        "operationId": "revokeAccessToken",
+        "summary": "Slackアクセストークンを取り消す",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Slackのアクセストークンを取り消す",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Slack"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/slack/hasAccessToken": {
+      "get": {
+        "operationId": "hasAccessToken",
+        "summary": "Slackアクセストークンの保存有無をチェックする",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Slackアクセストークンの保存有無を取得する",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Slack"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/slack": {
+      "get": {
+        "operationId": "getSlack",
+        "summary": "Slackレコードを1件取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "リクエストユーザーテナントのSlackレコードを取得する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlackEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Slack"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateSlack",
+        "summary": "Slackレコードを1件更新する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "リクエストユーザーテナントのSlackレコードを更新する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlackEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Slack"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/slack/channels": {
+      "get": {
+        "operationId": "getChannels",
+        "summary": "Slackのチャンネル一覧を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Slackのチャンネル一覧を取得する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SlackChannelEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Slack"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/slack/connectivityTest": {
+      "post": {
+        "operationId": "connectivityTest",
+        "summary": "Slack通知のテストを行う。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "設定されているチャンネルに対してSlack通知のテストを行う。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlackConnectivityResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlackConnectivityResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Slack"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes": {
+      "get": {
+        "operationId": "listMyProcesses",
+        "summary": "自分自身がアクション可能、またはアクションしたプロセスの一覧を取得する。",
+        "parameters": [
+          {
+            "name": "processHistoryType",
+            "required": false,
+            "in": "query",
+            "description": "actioned=trueのとき、アクション履歴種別で絞り込みます。actioned=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": false,
+            "in": "query",
+            "description": "permitted=trueのとき、指定したアクションが可能なプロセスに絞り込みます。permitted=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actioned",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクションしたプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "permitted",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクション可能なプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "プロセス一覧を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListWorkflowProcessesResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/nodeActions": {
+      "get": {
+        "operationId": "listProcessWithNodeActions",
+        "summary": "自分自身がアクション可能、またはアクションしたプロセスの一覧をアクション可能なノードとアクションとあわせて取得する。",
+        "parameters": [
+          {
+            "name": "processHistoryType",
+            "required": false,
+            "in": "query",
+            "description": "actioned=trueのとき、アクション履歴種別で絞り込みます。actioned=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": false,
+            "in": "query",
+            "description": "permitted=trueのとき、指定したアクションが可能なプロセスに絞り込みます。また、返却するノードを可能なアクションで絞り込みます。permitted=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actioned",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクションしたプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "permitted",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクション可能なプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "プロセス一覧をアクション可能なノードとアクションとあわせて返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessWithNodeActionsEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/{processId}": {
+      "get": {
+        "operationId": "getMyProcesses",
+        "summary": "自分自身がアクション可能、またはアクションしたプロセスを一件取得する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "processHistoryType",
+            "required": false,
+            "in": "query",
+            "description": "actioned=trueのとき、アクション履歴種別で絞り込みます。actioned=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": false,
+            "in": "query",
+            "description": "permitted=trueのとき、指定したアクションが可能なプロセスに絞り込みます。permitted=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actioned",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクションしたプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "permitted",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクション可能なプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "プロセスを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/nodeActions/{processId}": {
+      "get": {
+        "operationId": "getProcessWithNodeActions",
+        "summary": "自分自身がアクション可能、またはアクションしたプロセス一件をアクション可能なノードとアクションとあわせて取得する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "processHistoryType",
+            "required": false,
+            "in": "query",
+            "description": "actioned=trueのとき、アクション履歴種別で絞り込みます。actioned=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": false,
+            "in": "query",
+            "description": "permitted=trueのとき、指定したアクションが可能なプロセスに絞り込みます。返却するノードを可能なアクションで絞り込みます。permitted=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actioned",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクションしたプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "permitted",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクション可能なプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "プロセスをアクション可能なノードとアクションとあわせて返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessWithNodeActionsEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/{processId}/diffs": {
+      "get": {
+        "operationId": "getMyDiffs",
+        "summary": "指定したIDのワークフロープロセスに関連する履歴の差分を取得する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したIDのワークフロープロセスを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProcessHistoryDiffEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/{processId}/{nodeId}": {
+      "get": {
+        "operationId": "getMyProcessesWithNodeId",
+        "summary": "自分自身がアクション可能、またはアクションしたプロセスを一件取得する。",
+        "description": "自分自身がアクション可能、またはアクションしたプロセスを一件取得する。\n      アクション可能なノードと可能アクションのうち、指定したnodeIdのもののみ取得する。\n      permitted=trueの場合、指定したnodeIdでアクション可能なプロセスのみ取得する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "processHistoryType",
+            "required": false,
+            "in": "query",
+            "description": "actioned=trueのとき、アクション履歴種別で絞り込みます。actioned=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": false,
+            "in": "query",
+            "description": "permitted=trueのとき、指定したアクションが可能なプロセスに絞り込みます。permitted=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actioned",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクションしたプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "permitted",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクション可能なプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "プロセスを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/nodeActions/{processId}/{nodeId}": {
+      "get": {
+        "operationId": "getProcessWithSpecificNodeActions",
+        "summary": "自分自身がアクション可能、またはアクションしたプロセス一件をアクション可能なノードとアクションとあわせて取得する。",
+        "description": "自分自身がアクション可能、またはアクションしたプロセス一件をアクション可能なノードとアクションとあわせて取得する。\n      permitted=trueかつnodeIdを指定した場合、指定したnodeIdでアクション可能なプロセスのみ取得する。",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "processHistoryType",
+            "required": false,
+            "in": "query",
+            "description": "actioned=trueのとき、アクション履歴種別で絞り込みます。actioned=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": false,
+            "in": "query",
+            "description": "permitted=trueのとき、指定したアクションが可能なプロセスに絞り込みます。返却するノードを可能なアクションで絞り込みます。permitted=falseの場合は、このパラメーターは無視されます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actioned",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクションしたプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "permitted",
+            "required": false,
+            "in": "query",
+            "description": "trueを指定すると、ユーザーがアクション可能なプロセスに絞り込みます。",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "プロセスをアクション可能なノードとアクションとあわせて返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessWithNodeActionsEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/{processId}/files/upload": {
+      "post": {
+        "operationId": "uploadMyProcessDataFile",
+        "summary": "自身のプロセスデータに紐づいたファイルをアップロードする",
+        "description": "業務ユーザー向けプロセスファイルアップロードAPI",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProcessFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "プロセスデータの更新結果を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Promise"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/{processId}/files/getDownloadUrl": {
+      "post": {
+        "operationId": "getMyProcessDataFileDownloadUrl",
+        "summary": "自身のプロセスに紐づいた指定のファイルの一時ダウンロードURLを発行する（有効期限15分）",
+        "description": "業務ユーザー向けプロセスファイルダウンロードAPI",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "disposition",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProcessFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "指定したファイルの一時ダウンロードURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/processes/{processId}/files/delete": {
+      "post": {
+        "operationId": "deleteMyProcessDataFile",
+        "summary": "自身のプロセスデータに紐づいた指定のファイルを削除する",
+        "description": "業務ユーザー向けプロセスファイル削除API",
+        "parameters": [
+          {
+            "name": "processId",
+            "required": true,
+            "in": "path",
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProcessFileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "プロセスデータの更新結果を返す。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Promise"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowProcessEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyProcess"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/systemActionPolicies": {
+      "get": {
+        "operationId": "listMySystemActionPolicies",
+        "summary": "自分自身が持つシステム実行ポリシーを一覧で取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "システム実行ポリシーを一覧で返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SystemActionPoliciesEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyAction"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/settings": {
+      "get": {
+        "operationId": "listSettings",
+        "summary": "テナントに紐づく設定一覧を取得する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "テナントに紐づく設定一覧を全件取得する",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SettingEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Setting"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateSettings",
+        "summary": "設定を1件更新する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "更新した設定を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Setting"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createSetting",
+        "summary": "設定を1件登録する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "登録した設定を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SettingEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Setting"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/models": {
+      "get": {
+        "operationId": "listMyModels",
+        "summary": "自分自身がアクション可能なモデルの一覧を取得する。",
+        "parameters": [
+          {
+            "name": "nodeActionType",
+            "required": false,
+            "in": "query",
+            "description": "特定のアクションが可能なモデルに絞り込みます。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "モデル一覧を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkflowModelEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyModel"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/models/nodeActions": {
+      "get": {
+        "operationId": "listModelWithNodeActions",
+        "summary": "自分自身が権限を持つモデル一覧をアクション可能なノードとアクションとあわせて取得する。",
+        "parameters": [
+          {
+            "name": "nodeActionType",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "モデル一覧をアクション可能なノードとアクションとあわせて返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ModelWithNodeActionsEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyModel"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/my/models/{modelId}": {
+      "get": {
+        "operationId": "getMyModel",
+        "summary": "自分自身がアクション可能なモデルの一覧を取得する。",
+        "parameters": [
+          {
+            "name": "modelId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeActionType",
+            "required": false,
+            "in": "query",
+            "description": "特定のアクションが可能なモデルに絞り込みます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "モデル一覧を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowModelEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "MyModel"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cors": {
+      "get": {
+        "operationId": "listCorsOrigins",
+        "summary": "接続を許可するURLの一覧を取得します。",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "検索条件<br>以下のような文字列を受け取って検索条件とします。<br>{\"name\":{\"equals\":\"example\"},\"price\":{\"lt\":1000}}",
+            "schema": {
+              "type": "string",
+              "example": "{\"name\":{\"equals\":\"example\"}}"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "description": "取得時に取得せずスキップする件数<br>指定しない場合は1件目から取得します。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "description": "取得件数<br>指定しない場合は全件取得されます。",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "接続を許可するURLの一覧を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCorsAllowedOriginResult"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cors"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createCorsOrigins",
+        "summary": "接続を許可するURLを登録します。",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCorsAllowedOriginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登録した接続を許可するURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorsAllowedOriginEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorsAllowedOriginEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cors"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cors/{id}": {
+      "get": {
+        "operationId": "getCorsOrigins",
+        "summary": "接続を許可するURLを一件取得します。",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "接続を許可するURLを一件返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorsAllowedOriginEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cors"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "updateCorsOrigins",
+        "summary": "接続を許可するURLを更新します。",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCorsAllowedOriginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新した接続を許可するURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorsAllowedOriginEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorsAllowedOriginEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cors"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteCorsOrigins",
+        "summary": "接続を許可するURLを削除します。",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "削除した接続を許可するURLを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorsAllowedOriginEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Cors"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/clientAuth": {
+      "get": {
+        "operationId": "listAccessToken",
+        "summary": "アクセストークンの一覧を取得する。",
+        "parameters": [
+          {
+            "name": "revoked",
+            "required": false,
+            "in": "query",
+            "description": "取消フラグ",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "アクセストークンの一覧を返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClientAccessTokenEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "ClientAuth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/clientAuth/{clientAccessTokenId}": {
+      "get": {
+        "operationId": "getAccessToken",
+        "summary": "アクセストークンを1件取得する。",
+        "parameters": [
+          {
+            "name": "clientAccessTokenId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "指定したアクセストークンを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientAccessTokenEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "ClientAuth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "updateAccessToken",
+        "summary": "アクセストークンの名前や説明を更新する。",
+        "parameters": [
+          {
+            "name": "clientAccessTokenId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "更新したアクセストークンを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientAccessTokenEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "ClientAuth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/clientAuth/oauth/token": {
+      "post": {
+        "operationId": "generateToken",
+        "summary": "アクセストークンを発行する。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "発行したアクセストークンを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateClientAccessTokenResponseEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateClientAccessTokenResponseEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "ClientAuth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/v1/clientAuth/oauth/revoke": {
+      "post": {
+        "operationId": "revokeToken",
+        "summary": "アクセストークンを取り消す。",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "取り消したアクセストークンを返却する。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientAccessTokenEntity"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientAccessTokenEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "ClientAuth"
+        ],
+        "security": [
+          {
+            "Tenant": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "acomo API docs",
+    "description": "acomoのAPI仕様書です。",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "Authorization": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      },
+      "Tenant": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "apiKey",
+        "name": "x-tenant-id",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "SignInDto": {
+        "type": "object",
+        "properties": {
+          "authTenantId": {
+            "type": "string",
+            "description": "AuthテナントID",
+            "example": "mytenant-xhwpda"
+          },
+          "email": {
+            "type": "string",
+            "description": "メールアドレス",
+            "example": "user@acomo.app"
+          },
+          "password": {
+            "type": "string",
+            "description": "パスワード",
+            "example": "password"
+          }
+        },
+        "required": [
+          "authTenantId",
+          "email",
+          "password"
+        ]
+      },
+      "SessionEntity": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "description": "セッションID",
+            "example": "1"
+          },
+          "authUserId": {
+            "type": "string",
+            "description": "AuthユーザーID"
+          },
+          "email": {
+            "type": "string",
+            "description": "メールアドレス",
+            "example": "admin@acomo.com"
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "アクセストークン"
+          },
+          "userInfo": {
+            "type": "object",
+            "description": "ユーザー情報"
+          }
+        },
+        "required": [
+          "sessionId",
+          "authUserId",
+          "email"
+        ]
+      },
+      "SignInMethodEntity": {
+        "type": "object",
+        "properties": {
+          "identityProviderType": {
+            "type": "string",
+            "description": "認証プロバイダー種別\n\"emailpassword\", \"thirdparty\", \"passwordless\" のいずれか。",
+            "enum": [
+              "emailpassword",
+              "thirdparty",
+              "passwordless"
+            ]
+          },
+          "tenantIds": {
+            "description": "テナントId",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "emailVerified": {
+            "type": "boolean",
+            "description": "メールアドレス確認"
+          },
+          "lastSignInTime": {
+            "type": "number",
+            "description": "最終サインイン日時"
+          },
+          "recipeUserId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "identityProviderType",
+          "tenantIds",
+          "emailVerified",
+          "lastSignInTime",
+          "recipeUserId"
+        ]
+      },
+      "UserAuthInfoEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ユーザーID"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "テナントID"
+          },
+          "email": {
+            "type": "string",
+            "description": "メールアドレス"
+          },
+          "creationTime": {
+            "type": "number",
+            "description": "登録日時（アカウントが作成された日付）"
+          },
+          "signInMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignInMethodEntity"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "email",
+          "creationTime",
+          "signInMethods"
+        ]
+      },
+      "AccountEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "アカウントID"
+          },
+          "authId": {
+            "type": "string",
+            "description": "Auth-ID\n認証基盤側で採番されるユーザーアカウントを一意に特定するID。"
+          },
+          "email": {
+            "type": "string",
+            "description": "メールアドレス"
+          }
+        },
+        "required": [
+          "id",
+          "authId",
+          "email"
+        ]
+      },
+      "OrganizationEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "組織ID",
+            "example": "34eacca2-6c42-48d2-a2d2-60d8c3ca0ca2"
+          },
+          "name": {
+            "type": "string",
+            "description": "組織名"
+          },
+          "customerId": {
+            "type": "string",
+            "description": "顧客ID",
+            "example": "cus_OUxxxxxxxxxxxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "最終更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateOrganizationDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "組織名",
+            "example": "acomo.inc"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "TenantEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "テナントID",
+            "example": "34eacca2-6c42-48d2-a2d2-60d8c3ca0ca2"
+          },
+          "authTenantId": {
+            "type": "string",
+            "description": "AuthテナントID。\nFirebase Authentication with Identity Platform側でテナントを作成した際に自動で採番される一意のID。",
+            "example": "acomo-xsllp"
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "組織ID",
+            "example": "acomo-xsllp"
+          },
+          "name": {
+            "type": "string",
+            "description": "テナント名",
+            "example": "株式会社acomo"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "最終更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "createdBy": {
+            "description": "作成ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "updatedBy": {
+            "description": "最終更新ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "authTenantId",
+          "organizationId",
+          "name",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy"
+        ]
+      },
+      "GroupEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "グループID",
+            "example": "1"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "テナントID"
+          },
+          "name": {
+            "type": "string",
+            "description": "グループ名",
+            "example": "営業部"
+          },
+          "parentId": {
+            "type": "string",
+            "description": "親グループID\n親グループに null を指定した場合は、トップレベルグループとなる",
+            "example": "0"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "最終更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "createdBy": {
+            "description": "作成ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "updatedBy": {
+            "description": "最終更新ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "name",
+          "parentId",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy"
+        ]
+      },
+      "RoleEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ロールID",
+            "example": "1"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "テナントID"
+          },
+          "name": {
+            "type": "string",
+            "description": "ロール名",
+            "example": "システム管理者"
+          },
+          "type": {
+            "type": "string",
+            "description": "ロール種別\n'custom'または'preset'",
+            "example": "custom"
+          },
+          "systemActionPolicies": {
+            "description": "システム実行ポリシー",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "最終更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "createdBy": {
+            "description": "作成ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "updatedBy": {
+            "description": "最終更新ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "name",
+          "type",
+          "systemActionPolicies",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy"
+        ]
+      },
+      "UserEntity": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "ユーザーの有効・無効状態",
+            "enum": [
+              "ENABLED",
+              "DISABLED"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "区分",
+            "enum": [
+              "human",
+              "service"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "ユーザーID",
+            "example": "1"
+          },
+          "tenant": {
+            "description": "テナント",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TenantEntity"
+              }
+            ]
+          },
+          "email": {
+            "type": "string",
+            "description": "Eメール",
+            "example": "admin@acomo.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "ユーザー名",
+            "example": "鈴木"
+          },
+          "authId": {
+            "type": "string",
+            "description": "テナントごとのsupertokens userId"
+          },
+          "groups": {
+            "description": "所属グループ",
+            "example": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupEntity"
+            }
+          },
+          "roles": {
+            "description": "ロール",
+            "example": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleEntity"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "最終更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "createdBy": {
+            "description": "作成ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "updatedBy": {
+            "description": "最終更新ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "shouldPasswordInitialize": {
+            "type": "boolean",
+            "description": "ログイン時にパスワードの変更を求めるかどうか",
+            "example": false
+          },
+          "isAdmin": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "status",
+          "type",
+          "id",
+          "tenant",
+          "email",
+          "name",
+          "authId",
+          "groups",
+          "roles",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy",
+          "shouldPasswordInitialize",
+          "isAdmin"
+        ]
+      },
+      "IdentityProviderEntity": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "認証プロバイダーがデフォルトかカスタムか判別",
+            "enum": [
+              "default",
+              "custom"
+            ]
+          },
+          "thirdPartyId": {
+            "type": "string",
+            "description": "サードパーティID"
+          },
+          "name": {
+            "type": "string",
+            "description": "認証プロバイダー名"
+          },
+          "clientId": {
+            "type": "string",
+            "description": "クライアントID"
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "クライアントシークレット"
+          },
+          "oidcDiscoveryEndpoint": {
+            "type": "string",
+            "description": "OIDCディスカバリーエンドポイント"
+          },
+          "scope": {
+            "description": "OAuth Scope",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "thirdPartyId",
+          "name"
+        ]
+      },
+      "AuthConfigEntity": {
+        "type": "object",
+        "properties": {
+          "identityProviders": {
+            "description": "認証プロバイダー\n外部認証で用いる認証プロバイダー情報のリスト",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdentityProviderEntity"
+            }
+          },
+          "emailPasswordEnabled": {
+            "type": "boolean",
+            "description": "メール・パスワード認証有効状態"
+          },
+          "otpEmailEnabled": {
+            "type": "boolean"
+          },
+          "otpPhoneEnabled": {
+            "type": "boolean",
+            "description": "ワンタイムパスワード（SMS）認証有効状態"
+          },
+          "linkPhoneEnabled": {
+            "type": "boolean",
+            "description": "ログインリンク（Email）認証有効状態"
+          },
+          "linkEmailEnabled": {
+            "type": "boolean",
+            "description": "ログインリンク（SMS）認証有効状態"
+          },
+          "thirdPartyEnabled": {
+            "type": "boolean",
+            "description": "外部認証有効状態"
+          }
+        },
+        "required": [
+          "identityProviders",
+          "emailPasswordEnabled",
+          "otpEmailEnabled",
+          "otpPhoneEnabled",
+          "linkPhoneEnabled",
+          "linkEmailEnabled",
+          "thirdPartyEnabled"
+        ]
+      },
+      "TenantWithSignInMethodEntity": {
+        "type": "object",
+        "properties": {
+          "tenant": {
+            "description": "テナント",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TenantEntity"
+              }
+            ]
+          },
+          "tenantAuthConfig": {
+            "$ref": "#/components/schemas/AuthConfigEntity"
+          },
+          "userSignInMethods": {
+            "description": "ユーザーがテナントで許容されるサインイン方法",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignInMethodEntity"
+            }
+          }
+        },
+        "required": [
+          "tenant",
+          "tenantAuthConfig",
+          "userSignInMethods"
+        ]
+      },
+      "CreateTenantDto": {
+        "type": "object",
+        "properties": {
+          "authTenantId": {
+            "type": "string",
+            "description": "AuthテナントID"
+          },
+          "name": {
+            "type": "string",
+            "description": "テナント名"
+          }
+        },
+        "required": [
+          "authTenantId",
+          "name"
+        ]
+      },
+      "UpdateTenantDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "テナント名"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CustomerPortalDto": {
+        "type": "object",
+        "properties": {
+          "returnUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "returnUrl"
+        ]
+      },
+      "UrlEntity": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "SubscribeDto": {
+        "type": "object",
+        "properties": {
+          "authTenantId": {
+            "type": "string"
+          },
+          "planName": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "successUrl": {
+            "type": "string"
+          },
+          "cancelUrl": {
+            "type": "string"
+          },
+          "isTrial": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "authTenantId",
+          "planName",
+          "quantity",
+          "successUrl",
+          "cancelUrl",
+          "isTrial"
+        ]
+      },
+      "SubscriptionEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "サブスクリプションID",
+            "example": "sub_1NhSAVDWBYUb4IE7C1tTxxxx"
+          },
+          "status": {
+            "type": "object"
+          },
+          "currentPeriodStart": {
+            "type": "number"
+          },
+          "currentPeriodEnd": {
+            "type": "number"
+          },
+          "cancelAt": {
+            "type": "number"
+          },
+          "canceledAt": {
+            "type": "number"
+          },
+          "cancelAtPeriodEnd": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "authTenantId": {
+            "type": "string"
+          },
+          "trial": {
+            "type": "string"
+          },
+          "trialStart": {
+            "type": "number"
+          },
+          "trialEnd": {
+            "type": "number"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "currentPeriodStart",
+          "currentPeriodEnd",
+          "cancelAt",
+          "canceledAt",
+          "cancelAtPeriodEnd",
+          "description",
+          "authTenantId",
+          "trial",
+          "trialStart",
+          "trialEnd",
+          "items"
+        ]
+      },
+      "TenantPlanStatusEntity": {
+        "type": "object",
+        "properties": {
+          "plan": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "isTrial": {
+            "type": "boolean"
+          },
+          "currentPeriodEnd": {
+            "type": "number"
+          },
+          "isContinued": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "plan",
+          "quantity",
+          "isTrial"
+        ]
+      },
+      "TenantIdentityProviderEntity": {
+        "type": "object",
+        "properties": {
+          "thirdPartyId": {
+            "type": "string",
+            "description": "サードパーティID",
+            "example": "google"
+          },
+          "name": {
+            "type": "string",
+            "description": "認証プロバイダー名",
+            "example": "Google"
+          },
+          "type": {
+            "type": "string",
+            "description": "認証プロバイダー種別",
+            "example": "google"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "デフォルト認証プロバイダーかどうか判別"
+          }
+        },
+        "required": [
+          "thirdPartyId",
+          "name",
+          "type",
+          "isDefault"
+        ]
+      },
+      "CreateOrUpdateIdentityProviderDto": {
+        "type": "object",
+        "properties": {
+          "thirdPartyType": {
+            "type": "string",
+            "description": "サードパーティ種別",
+            "example": "google",
+            "enum": [
+              "google",
+              "github",
+              "gitlab",
+              "slack",
+              "custom"
+            ]
+          },
+          "thirdPartyId": {
+            "type": "string",
+            "description": "サードパーティId",
+            "example": "google"
+          },
+          "name": {
+            "type": "string",
+            "description": "認証プロバイダー名",
+            "example": "Google"
+          },
+          "clientId": {
+            "type": "string",
+            "description": "クライアントID"
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "クライアントシークレット"
+          },
+          "oidcDiscoveryEndpoint": {
+            "type": "string",
+            "description": "OIDCディスカバリーエンドポイント"
+          },
+          "scope": {
+            "description": "OAuth Scope",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "thirdPartyType",
+          "name",
+          "clientId",
+          "clientSecret"
+        ]
+      },
+      "ListUsersResult": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "description": "ユーザー一覧",
+            "example": "",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserEntity"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "総数",
+            "example": 10
+          }
+        },
+        "required": [
+          "users",
+          "total"
+        ]
+      },
+      "ListGroupsResult": {
+        "type": "object",
+        "properties": {
+          "groups": {
+            "description": "グループ一覧",
+            "example": "",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupEntity"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "総数",
+            "example": 10
+          }
+        },
+        "required": [
+          "groups",
+          "total"
+        ]
+      },
+      "ListRolesResult": {
+        "type": "object",
+        "properties": {
+          "roles": {
+            "description": "ロール一覧",
+            "example": "",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleEntity"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "総数",
+            "example": 10
+          }
+        },
+        "required": [
+          "roles",
+          "total"
+        ]
+      },
+      "WorkflowModelEntity": {
+        "type": "object",
+        "properties": {
+          "createdBy": {
+            "$ref": "#/components/schemas/UserEntity"
+          },
+          "updatedBy": {
+            "$ref": "#/components/schemas/UserEntity"
+          },
+          "definition": {
+            "type": "object",
+            "description": "ワークフロー定義",
+            "example": "{}"
+          },
+          "dataSchema": {
+            "type": "object",
+            "description": "データスキーマ",
+            "example": "{}"
+          },
+          "policy": {
+            "type": "object",
+            "description": "データアクセスポリシー",
+            "example": "{}"
+          },
+          "historyType": {
+            "type": "string",
+            "description": "履歴の種別\n[create, update, publish]",
+            "enum": [
+              "create",
+              "update",
+              "publish",
+              "deactivate"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "ワークフローモデルID",
+            "example": "ac1ff9f0-1b7c-4fd6-8122-7c3aa8cf3328"
+          },
+          "historyId": {
+            "type": "string",
+            "description": "ワークフローモデル履歴ID",
+            "example": "ac1ff9f0-1b7c-4fd6-8122-7c3aa8cf3328"
+          },
+          "isPublished": {
+            "type": "boolean",
+            "description": "現在公開されているかモデルであるかを示します"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "description": "説明",
+            "example": "経費申請の承認を行います。"
+          },
+          "version": {
+            "type": "number",
+            "description": "バージョン",
+            "example": 1
+          }
+        },
+        "required": [
+          "createdBy",
+          "updatedBy",
+          "definition",
+          "dataSchema",
+          "policy",
+          "historyType",
+          "id",
+          "historyId",
+          "isPublished",
+          "createdAt",
+          "updatedAt",
+          "name",
+          "description",
+          "version"
+        ]
+      },
+      "ListWorkflowModelsResult": {
+        "type": "object",
+        "properties": {
+          "models": {
+            "description": "ワークフローモデル一覧",
+            "example": "",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowModelEntity"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "総数",
+            "example": 10
+          }
+        },
+        "required": [
+          "models",
+          "total"
+        ]
+      },
+      "UpdateModelDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "モデル名",
+            "example": "経費申請・承認フロー"
+          },
+          "description": {
+            "type": "string",
+            "description": "説明",
+            "example": "経費申請の承認を行います。"
+          },
+          "definition": {
+            "type": "object",
+            "description": "ワークフロー定義"
+          },
+          "dataSchema": {
+            "type": "object",
+            "description": "データスキーマ"
+          },
+          "policy": {
+            "type": "object",
+            "description": "データアクセスポリシー"
+          }
+        },
+        "required": [
+          "name",
+          "definition",
+          "dataSchema",
+          "policy"
+        ]
+      },
+      "CreateModelDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "モデル名",
+            "example": "経費申請・承認フロー"
+          },
+          "description": {
+            "type": "string",
+            "description": "説明",
+            "example": "経費申請の承認を行います。"
+          },
+          "definition": {
+            "type": "object",
+            "description": "ワークフロー定義"
+          },
+          "dataSchema": {
+            "type": "object",
+            "description": "データスキーマ"
+          },
+          "policy": {
+            "type": "object",
+            "description": "データアクセスポリシー"
+          }
+        },
+        "required": [
+          "name",
+          "definition",
+          "dataSchema",
+          "policy"
+        ]
+      },
+      "ProcessTokenEntity": {
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string"
+          },
+          "prevNodeId": {
+            "type": "string"
+          },
+          "prevAction": {
+            "type": "string"
+          },
+          "childProcessTokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessTokenEntity"
+            }
+          },
+          "currentNodeIds": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "nodeId",
+          "prevNodeId",
+          "prevAction",
+          "childProcessTokens",
+          "currentNodeIds"
+        ]
+      },
+      "WorkflowProcessEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ワークフロープロセスID",
+            "example": "1"
+          },
+          "historyId": {
+            "type": "string",
+            "description": "ワークフロープロセス履歴ID",
+            "example": ""
+          },
+          "name": {
+            "type": "string",
+            "description": "プロセス名",
+            "example": "経費申請: Aさん"
+          },
+          "description": {
+            "type": "string",
+            "description": "説明",
+            "example": "2023年3月分の経費申請です。"
+          },
+          "model": {
+            "description": "ワークフローモデル",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WorkflowModelEntity"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "token": {
+            "description": "以下プロセス履歴のプロパティ\nプロセス履歴を意識せずに扱えるような仕組みを目標",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ProcessTokenEntity"
+              }
+            ]
+          },
+          "status": {
+            "type": "object",
+            "description": "プロセスステータス",
+            "example": "IN_PROGRESS"
+          },
+          "data": {
+            "type": "object",
+            "description": "プロセスデータ"
+          },
+          "type": {
+            "type": "string",
+            "description": "プロセス履歴種別"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "メタデータ"
+          },
+          "definitionEntityCache": {
+            "type": "object",
+            "description": "ワークフローモデルエンティティのキャッシュ\nmetadataから生成した展開済みのモデルエンティティのキャッシュはここに持つ"
+          }
+        },
+        "required": [
+          "id",
+          "historyId",
+          "name",
+          "description",
+          "model",
+          "createdAt",
+          "updatedAt",
+          "token",
+          "status",
+          "data",
+          "type",
+          "metadata",
+          "definitionEntityCache"
+        ]
+      },
+      "ListWorkflowProcessesResult": {
+        "type": "object",
+        "properties": {
+          "processes": {
+            "description": "プロセス一覧",
+            "example": "",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowProcessEntity"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "総数",
+            "example": 10
+          }
+        },
+        "required": [
+          "processes",
+          "total"
+        ]
+      },
+      "UpdateProcessDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "プロセス名",
+            "example": "経費申請: Aさん"
+          },
+          "description": {
+            "type": "string",
+            "description": "説明",
+            "example": "2023年3月分の経費申請です。"
+          }
+        }
+      },
+      "ProcessHistoryDiffEntity": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "直前に行った操作",
+            "example": "reject"
+          },
+          "dataDiffs": {
+            "type": "object",
+            "description": "データ差分",
+            "example": "{comment: \"よろしくお願いします\"}"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "status": {
+            "type": "string",
+            "description": "プロセスステータス",
+            "example": "IN_PROGRESS"
+          },
+          "actionFromNode": {
+            "type": "object",
+            "description": "操作するノード"
+          },
+          "actionToNodes": {
+            "description": "操作して変化したノード",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "currentNodes": {
+            "description": "現在のノード",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "dataDiffs",
+          "updatedAt",
+          "status",
+          "actionFromNode",
+          "actionToNodes",
+          "currentNodes"
+        ]
+      },
+      "CreateProcessFileDto": {
+        "type": "object",
+        "properties": {
+          "property": {
+            "type": "string",
+            "description": "プロパティ（データ項目名）",
+            "example": "attachmentFiles"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "ファイル名",
+            "example": "領収書.pdf"
+          }
+        },
+        "required": [
+          "property",
+          "fileName"
+        ]
+      },
+      "Promise": {
+        "type": "object",
+        "properties": {}
+      },
+      "CrudSystemActionSubject": {
+        "type": "string",
+        "enum": [
+          "Model",
+          "Process",
+          "Action",
+          "User",
+          "Group",
+          "Role",
+          "AuthConfig",
+          "Setting",
+          "Development",
+          "Slack"
+        ]
+      },
+      "ExecutionSystemActionSubject": {
+        "type": "string",
+        "enum": [
+          "Engine",
+          "Ai"
+        ]
+      },
+      "PresetSystemActionSubject": {
+        "type": "string",
+        "enum": [
+          "Preset"
+        ]
+      },
+      "ExecutionSystemActionType": {
+        "type": "string",
+        "enum": [
+          "execute",
+          "read"
+        ]
+      },
+      "CrudSystemActionType": {
+        "type": "string",
+        "enum": [
+          "manage",
+          "write",
+          "read",
+          "delete"
+        ]
+      },
+      "PresetSystemActionType": {
+        "type": "string",
+        "enum": [
+          "administrate",
+          "manage",
+          "use",
+          "develop"
+        ]
+      },
+      "SystemActionPoliciesSubjectEnumWrapper": {
+        "type": "object",
+        "properties": {
+          "CrudSystemActionSubject": {
+            "$ref": "#/components/schemas/CrudSystemActionSubject"
+          },
+          "ExecutionSystemActionSubject": {
+            "$ref": "#/components/schemas/ExecutionSystemActionSubject"
+          },
+          "PresetSystemActionSubject": {
+            "$ref": "#/components/schemas/PresetSystemActionSubject"
+          },
+          "ExecutionSystemActionType": {
+            "$ref": "#/components/schemas/ExecutionSystemActionType"
+          },
+          "CrudSystemActionType": {
+            "$ref": "#/components/schemas/CrudSystemActionType"
+          },
+          "PresetSystemActionType": {
+            "$ref": "#/components/schemas/PresetSystemActionType"
+          }
+        },
+        "required": [
+          "CrudSystemActionSubject",
+          "ExecutionSystemActionSubject",
+          "PresetSystemActionSubject",
+          "ExecutionSystemActionType",
+          "CrudSystemActionType",
+          "PresetSystemActionType"
+        ]
+      },
+      "SystemActionPoliciesEntity": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "description": "APIタグ",
+            "example": "Engine",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CrudSystemActionSubject"
+              },
+              {
+                "$ref": "#/components/schemas/ExecutionSystemActionSubject"
+              },
+              {
+                "$ref": "#/components/schemas/PresetSystemActionSubject"
+              }
+            ]
+          },
+          "type": {
+            "description": "アクション名",
+            "example": "write",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ExecutionSystemActionType"
+              },
+              {
+                "$ref": "#/components/schemas/CrudSystemActionType"
+              },
+              {
+                "$ref": "#/components/schemas/PresetSystemActionType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "subject",
+          "type"
+        ]
+      },
+      "NodeActionsEntity": {
+        "type": "object",
+        "properties": {
+          "node": {
+            "type": "object",
+            "description": "ノード"
+          },
+          "nodeActionTypes": {
+            "type": "array",
+            "description": "ノードで可能なアクション",
+            "example": [
+              "start",
+              "submit"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "manage",
+                "read",
+                "start",
+                "submit",
+                "approve",
+                "reject",
+                "revert"
+              ]
+            }
+          }
+        },
+        "required": [
+          "node",
+          "nodeActionTypes"
+        ]
+      },
+      "ProcessWithNodeActionsEntity": {
+        "type": "object",
+        "properties": {
+          "process": {
+            "description": "プロセス",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WorkflowProcessEntity"
+              }
+            ]
+          },
+          "nodeActions": {
+            "description": "権限を持っているノードと権限を持っているアクションの組み合わせ",
+            "example": "",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NodeActionsEntity"
+            }
+          }
+        },
+        "required": [
+          "process",
+          "nodeActions"
+        ]
+      },
+      "ModelWithNodeActionsEntity": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "description": "ワークフローモデル",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WorkflowModelEntity"
+              }
+            ]
+          },
+          "nodeActions": {
+            "description": "権限を持っているノードと権限を持っているアクションの組み合わせ",
+            "example": "{ node : {} , NodeActionTypes: [\"start\"]}",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NodeActionsEntity"
+            }
+          }
+        },
+        "required": [
+          "model",
+          "nodeActions"
+        ]
+      },
+      "ChatAiDto": {
+        "type": "object",
+        "properties": {
+          "chatId": {
+            "type": "string",
+            "description": "チャットID"
+          },
+          "request": {
+            "type": "string",
+            "description": "依頼文",
+            "example": "経費の申請・承認業務のモデルを作成してください。"
+          }
+        },
+        "required": [
+          "chatId",
+          "request"
+        ]
+      },
+      "ChatAiResponseEntity": {
+        "type": "object",
+        "properties": {
+          "chatId": {
+            "type": "string",
+            "description": "チャットID\n初回のチャットでは自動生成されたチャットIDが返される。\n同じチャットIDを指定してAPIを呼び出すことで、会話の続きからチャット可能。",
+            "example": "9d093fa9-ef5d-44d6-9106-cb0f6c26b9a3"
+          },
+          "tokens": {
+            "type": "number",
+            "description": "総トークン数(OpenAI Chat Completion APIのtotal token)\n※取得に失敗して0で返される場合があります。",
+            "example": 4096
+          },
+          "message": {
+            "type": "string",
+            "description": "チャットの応答メッセージ文",
+            "example": "こちらが依頼された業務に基づいて生成したワークフロー定義とデータスキーマです。"
+          },
+          "definition": {
+            "type": "object",
+            "description": "AIが生成したワークフロー定義\nワークフローモデルエンティティのdefinitionと同等。"
+          },
+          "dataSchema": {
+            "type": "object",
+            "description": "AIが生成したデータスキーマ\nワークフローモデルエンティティのdataSchemaと同等。"
+          }
+        },
+        "required": [
+          "chatId",
+          "tokens"
+        ]
+      },
+      "AskAiForDefintionDto": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": "依頼文",
+            "example": "経費の申請・承認業務のモデルを作成してください。"
+          }
+        },
+        "required": [
+          "request"
+        ]
+      },
+      "AskAiForDataSchemaDto": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": "依頼文",
+            "example": "経費の申請・承認業務のモデルを作成してください。"
+          },
+          "enableExistingDataSchemaReference": {
+            "type": "boolean",
+            "description": "既存のデータスキーマのプロパティを参考にするかどうかを表すオプションです。\ntrueならば、既存の公開済みモデルのデータスキーマのプロパティを最大100件読み取り、生成時に参考情報として使用します。必ず使われるとは限りません。\nfalseならば、ゼロベースで検討します。\nデフォルトはfalseです。",
+            "example": false,
+            "default": false
+          }
+        },
+        "required": [
+          "request",
+          "enableExistingDataSchemaReference"
+        ]
+      },
+      "SlackEntity": {
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "description": "アクセストークンは秘匿情報なのでここでは扱わない"
+          },
+          "channelId": {
+            "type": "string",
+            "description": "SlackチャンネルID\nSlack側で管理されるチャンネルのIDそのもの。"
+          },
+          "channelName": {
+            "type": "string",
+            "description": "チャンネル名",
+            "example": "generalなど"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "最終更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "createdBy": {
+            "description": "作成ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "updatedBy": {
+            "description": "最終更新ユーザー",
+            "example": "{}",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          }
+        },
+        "required": [
+          "tenantId",
+          "channelId",
+          "channelName",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy"
+        ]
+      },
+      "SlackChannelEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "SlackチャンネルID\nSlack側で管理されるチャンネルのIDそのもの。"
+          },
+          "name": {
+            "type": "string",
+            "description": "チャンネル名",
+            "example": "generalなど"
+          },
+          "memberCounts": {
+            "type": "number",
+            "description": "メンバー数"
+          },
+          "isPrivate": {
+            "type": "boolean",
+            "description": "プライベートチャンネルかどうか\nプライベートチャンネルであればtrue、パブリックチャンネルであればfalse。"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "memberCounts",
+          "isPrivate"
+        ]
+      },
+      "SlackConnectivityResponse": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean",
+            "description": "Slackの疎通に成功したかどうか\n成功時はtrue, 失敗時はfalse"
+          },
+          "message": {
+            "type": "string",
+            "description": "処理結果のメッセージ"
+          },
+          "channelId": {
+            "type": "string",
+            "description": "SlackチャンネルID\nSlack側で管理されるチャンネルのIDそのもの。"
+          },
+          "channelName": {
+            "type": "string",
+            "description": "チャンネル名",
+            "example": "generalなど"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "エラーコード",
+            "example": "invalid_auth"
+          }
+        },
+        "required": [
+          "isSuccess",
+          "message",
+          "channelId",
+          "channelName",
+          "errorCode"
+        ]
+      },
+      "SettingEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "設定ID",
+            "example": "662173ec-c186-4652-8936-e467e06891bc"
+          },
+          "label": {
+            "type": "string",
+            "description": "設定名"
+          },
+          "value": {
+            "type": "string",
+            "description": "設定値"
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "テナントID"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "最終更新日時",
+            "example": "2023-03-03 02:50:05.943"
+          },
+          "createdBy": {
+            "description": "作成ユーザー",
+            "example": "6d1936fe-c7d9-4cec-9548-8cf3bf3b78a5",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "updatedBy": {
+            "description": "最終更新ユーザー",
+            "example": "6d1936fe-c7d9-4cec-9548-8cf3bf3b78a5",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "value",
+          "tenantId",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy"
+        ]
+      },
+      "CorsAllowedOriginEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id",
+            "example": "1"
+          },
+          "url": {
+            "type": "string",
+            "description": "接続を許可するurl",
+            "example": "https://acomo.app"
+          },
+          "description": {
+            "type": "string",
+            "description": "説明",
+            "example": "acomo フロントエンド"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "description"
+        ]
+      },
+      "ListCorsAllowedOriginResult": {
+        "type": "object",
+        "properties": {
+          "corsAllowedOrigins": {
+            "description": "接続元url一覧",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CorsAllowedOriginEntity"
+            }
+          },
+          "count": {
+            "type": "number",
+            "description": "総数"
+          }
+        },
+        "required": [
+          "corsAllowedOrigins",
+          "count"
+        ]
+      },
+      "CreateCorsAllowedOriginDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "description"
+        ]
+      },
+      "UpdateCorsAllowedOriginDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "description"
+        ]
+      },
+      "ClientAccessTokenEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID"
+          },
+          "tokenName": {
+            "type": "string",
+            "description": "トークン名"
+          },
+          "description": {
+            "type": "string",
+            "description": "トークンの説明"
+          },
+          "scope": {
+            "type": "string",
+            "description": "スコープ",
+            "example": "User:read Group:read Role:read"
+          },
+          "revoked": {
+            "type": "boolean",
+            "description": "取消フラグ"
+          },
+          "issuedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "発行日"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "有効期限"
+          },
+          "tenant": {
+            "description": "テナント",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TenantEntity"
+              }
+            ]
+          },
+          "user": {
+            "description": "ユーザー",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "作成日時"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "最終更新日時"
+          },
+          "createdBy": {
+            "description": "作成ユーザー",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          },
+          "updatedBy": {
+            "description": "最終更新ユーザー",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserEntity"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "tokenName",
+          "description",
+          "scope",
+          "revoked",
+          "issuedAt",
+          "expiresAt",
+          "tenant",
+          "user",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy"
+        ]
+      },
+      "GenerateClientAccessTokenResponseEntity": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "アクセストークン"
+          },
+          "scope": {
+            "type": "string",
+            "description": "スコープ",
+            "example": "User:read Group:read Role:read"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "有効期限"
+          }
+        },
+        "required": [
+          "accessToken",
+          "scope",
+          "expiresAt"
+        ]
+      }
+    }
+  }
+}
