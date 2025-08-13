@@ -2,7 +2,6 @@
 
 acomo API をツールから扱えるようにする MCP (Model Context Protocol) サーバです。stdio トランスポートで動作します。
 
-
 ## 必要条件
 
 - Node.js 18+（推奨: 20+）
@@ -65,6 +64,45 @@ node dist/server.js
 }
 ```
 
+## Docker での利用
+
+### イメージの取得
+
+```bash
+docker pull ghcr.io/progress-all/acomo-mcp-server:latest
+```
+
+### 直接実行
+
+```bash
+docker run -i --rm \
+  -e ACOMO_API_BASE="https://api.example.com" \
+  -e ACOMO_API_VERSION="v1" \
+  -e ACOMO_TENANT_ID="<tenant-id>" \
+  -e ACOMO_ACCESS_TOKEN="<access-token>" \
+  ghcr.io/progress-all/acomo-mcp-server:latest
+```
+
+### MCP クライアント設定例（docker 実行）
+
+```json
+{
+  "mcpServers": {
+    "acomo": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "ACOMO_API_BASE=https://api.example.com",
+        "-e", "ACOMO_API_VERSION=v1",
+        "-e", "ACOMO_TENANT_ID=<tenant-id>",
+        "-e", "ACOMO_ACCESS_TOKEN=<access-token>",
+        "ghcr.io/progress-all/acomo-mcp-server:latest"
+      ]
+    }
+  }
+}
+```
+
 ## 提供ツール（Tools）
 
 - `health`: ヘルスチェック
@@ -84,4 +122,3 @@ node dist/server.js
 ## ライセンス
 
 MIT License. 詳細は `LICENSE` を参照してください。
-
