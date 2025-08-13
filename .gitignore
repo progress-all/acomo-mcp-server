@@ -41,5 +41,6 @@ coverage/
 # Misc
 *.local
 
-# cursor
+# cursor / Claude Code
 .cursor
+.mcp.json

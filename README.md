@@ -32,6 +32,16 @@ acomo MCP は、用途に応じて次の2種類のツールを提供します。
 }
 ```
 
+### latest イメージの更新（Docker）
+
+`latest` タグのイメージを使っている場合、更新は次のコマンドで行えます。
+
+```bash
+docker pull ghcr.io/progress-all/acomo-mcp-server:latest
+```
+
+次回の起動（`docker run`）から新しいイメージが使われます。固定タグ（例: `vX.Y.Z`）を使っている場合は、そのタグを指定して pull してください。
+
 ### OpenAPI仕様に基づくAPIコールに必要な追加環境変数（`callApi`）
 
 APIコールツールを使う場合は、次の環境変数が必要です。
@@ -103,6 +113,18 @@ Node.js 18+（推奨: 20+）
 
 - `openapi://acomo`: OpenAPI 仕様全体（application/json）
 - `guide://auth`: 認証・ヘッダ設定の簡易ガイド（text/markdown）
+
+## 使い方の例
+
+acomo APIの詳細を知らなくとも自然文で問い合わせできます。以下は Cursorで`acomoのモデル一覧を取得して`と実行した場合の例です。これは実際にacomoのAPIコールまで実行しています。
+
+![Cursor での利用例](docs/images/sample-cursor.png)
+
+開発中にacomo APIの詳細をAIに教えながらコーディングする場合はAPIコールなしでも使えます。以下は、Claude Codeで`acomoのワークフローを開始する関数を書いて`と実行した場合の例です。
+
+![Claude Code での利用例](docs/images/sample-claude-code.png)
+
+補足: 表示される応答や生成コードの品質は、LLM のモデル特性やプロンプト、提供したコンテキストにより最適化されます。acomo MCP は OpenAPI 仕様の参照と安全な API 実行を担う標準インターフェースであり、各 LLM の強みを最大限に活かせるよう設計されています。
 
 ## ライセンス
 
