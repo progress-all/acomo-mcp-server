@@ -1,33 +1,6 @@
 # acomo-mcp-server
 
-acomo API をツールから扱えるようにする MCP (Model Context Protocol) サーバです。stdio トランスポートで動作します。
-
-## 必要条件
-
-- Node.js 18+（推奨: 20+）
-- `ACOMO_TENANT_ID`（必須）
-
-## インストールとビルド
-
-```bash
-npm install
-npm run build
-```
-
-## 実行（ローカル）
-
-```bash
-ACOMO_TENANT_ID=<tenant> \
-ACOMO_ACCESS_TOKEN=<token-optional> \
-ACOMO_API_BASE="http://localhost:3000" \
-ACOMO_OPENAPI_PATH="/absolute/path/to/this/repo/openapi.json" \
-node dist/server.js
-```
-
-注意:
-
-- 本リポは `openapi.json` を同梱しています。`ACOMO_OPENAPI_PATH` にその絶対パスを設定してください。
-- 既定の `openapiPath` はモノリポ想定の `./acomo-backend/openapi.json` を指すため、単独リポでは環境変数の指定が必要です。
+acomo API をツールから扱えるようにする MCP (Model Context Protocol) サーバです。stdio トランスポートで動作します。OpenAPI に基づく operation 一覧やスキーマ参照、リクエスト雛形生成、API 呼び出し（問い合わせ）も行えます。
 
 ## 環境変数
 
@@ -39,9 +12,9 @@ node dist/server.js
 - `ACOMO_MAX_RETRIES`（既定: `2`）
 - `ACOMO_OPENAPI_PATH`（例: `/absolute/path/to/repo/openapi.json`）
 
-## MCP クライアント設定例
+## MCP クライアント設定例（推奨: Docker）
 
-### 1. コンテナで実行する場合（Docker）
+以下は `mcpServers` 設定です。
 
 ```json
 {
@@ -52,7 +25,7 @@ node dist/server.js
         "run", "-i", "--rm",
         "-e", "ACOMO_API_BASE=https://acomo.app",
         "-e", "ACOMO_TENANT_ID=<tenant-id>",
-        "-e", "ACOMO_ACCESS_TOKEN=<access-token>",
+        "-e", "ACOMO_ACCESS_TOKEN=<access-token-optional>",
         "ghcr.io/progress-all/acomo-mcp-server:latest"
       ]
     }
@@ -60,82 +33,36 @@ node dist/server.js
 }
 ```
 
-### 2. ソースから実行する場合（git clone → build → 実行）
+## 代替: ソースから実行する場合（git clone → 実行）
 
-まずリポジトリを取得してビルドします。
+Node.js 18+（推奨: 20+）
 
-```bash
-git clone https://github.com/progress-all/acomo-mcp-server.git
-cd acomo-mcp-server
-npm ci
-npm run build
-```
+1. リポジトリを取得してビルドします。
 
-次に、MCP クライアント（Cursor / Claude Desktop など）で以下の設定例を登録します。`/absolute/path/to/repo` は実際の絶対パスに置き換えてください。
+   ```bash
+   git clone https://github.com/progress-all/acomo-mcp-server.git
+   cd acomo-mcp-server
+   npm ci
+   npm run build
+   ```
 
-```json
-{
-  "mcpServers": {
-    "acomo": {
-      "command": "node",
-      "args": ["/absolute/path/to/repo/dist/server.js"],
-      "env": {
-        "ACOMO_API_BASE": "https://acomo.app",
-        "ACOMO_TENANT_ID": "<tenant-id>",
-        "ACOMO_ACCESS_TOKEN": "<access-token>",
-        "ACOMO_ENABLE_MUTATION_TOOLS": "false",
-        "ACOMO_REQUEST_TIMEOUT_MS": "30000",
-        "ACOMO_MAX_RETRIES": "2",
-        "ACOMO_OPENAPI_PATH": "/absolute/path/to/repo/openapi.json"
-      }
-    }
-  }
-}
-```
+2. `mcpServers` 設定（Node 実行）
 
-## ソースからの利用（git clone）
-
-### 取得とセットアップ
-
-```bash
-git clone https://github.com/progress-all/acomo-mcp-server.git
-cd acomo-mcp-server
-npm ci
-npm run build
-```
-
-### 実行
-
-```bash
-ACOMO_TENANT_ID=<tenant> \
-ACOMO_ACCESS_TOKEN=<token-optional> \
-ACOMO_API_BASE="http://localhost:3000" \
-ACOMO_OPENAPI_PATH="/absolute/path/to/this/repo/openapi.json" \
-node dist/server.js
-```
-
-注意:
-
-- 本リポは `openapi.json` を同梱しています。`ACOMO_OPENAPI_PATH` にその絶対パスを設定してください。
-- MCP クライアント（Cursor / Claude Desktop）から利用する設定例は本ファイルの「MCP クライアント設定例（Cursor / Claude Desktop）」セクションを参照してください。
-
-## Docker での利用
-
-### イメージの取得
-
-```bash
-docker pull ghcr.io/progress-all/acomo-mcp-server:latest
-```
-
-### 直接実行
-
-```bash
-docker run -i --rm \
-  -e ACOMO_API_BASE="https://acomo.app" \
-  -e ACOMO_TENANT_ID="<tenant-id>" \
-  -e ACOMO_ACCESS_TOKEN="<access-token>" \
-  ghcr.io/progress-all/acomo-mcp-server:latest
-```
+   ```json
+   {
+     "mcpServers": {
+       "acomo": {
+         "command": "node",
+         "args": ["/absolute/path/to/repo/dist/server.js"],
+         "env": {
+           "ACOMO_API_BASE": "https://acomo.app",
+           "ACOMO_TENANT_ID": "<tenant-id>",
+           "ACOMO_ACCESS_TOKEN": "<access-token-optional>"
+         }
+       }
+     }
+   }
+   ```
 
 ## 提供ツール（Tools）
 
