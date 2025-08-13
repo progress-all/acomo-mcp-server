@@ -68,12 +68,6 @@ export async function findOperationById(
   return null;
 }
 
-export function buildUrlForOpenApiPath(openapiPath: string): string {
-  // cfg.baseUrl example: http://localhost:3000
-  const cfg = getConfig();
-  const base = cfg.baseUrl.replace(/\/$/, "");
-  return `${base}${openapiPath.startsWith("/") ? "" : "/"}${openapiPath}`;
-}
 
 // ----- Components (DTO/Entity Schemas) -----
 export async function listComponents(): Promise<string[]> {

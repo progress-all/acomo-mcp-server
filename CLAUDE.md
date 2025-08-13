@@ -27,17 +27,15 @@ npm run lint
 
 ## Environment Configuration
 
-The server requires environment variables for configuration:
+The server uses the following environment variables:
 
-- `ACOMO_TENANT_ID` (required): Tenant identifier
+- `ACOMO_TENANT_ID` (required for API calls): Tenant identifier
 - `ACOMO_API_BASE` (default: `https://acomo.app`): API base URL
-- `ACOMO_ACCESS_TOKEN` (optional): Bearer token for authentication
-- `ACOMO_ENABLE_MUTATION_TOOLS` (default: `false`): Enable write operations
-- `ACOMO_REQUEST_TIMEOUT_MS` (default: `30000`): Request timeout
-- `ACOMO_MAX_RETRIES` (default: `2`): Retry attempts
-- `ACOMO_OPENAPI_PATH` (default: `./acomo-backend/openapi.json`): Path to OpenAPI spec
+- `ACOMO_ACCESS_TOKEN` (required for API calls): Bearer token for authentication
+- `ACOMO_REQUEST_TIMEOUT_MS` (default: `30000`): Request timeout in ms
+- `ACOMO_OPENAPI_PATH` (default: bundled `openapi.json`): Absolute path to OpenAPI spec (override only if needed)
 
-For standalone repository usage, always set `ACOMO_OPENAPI_PATH` to the absolute path of the included `openapi.json` file.
+When running from the repository, you can leave `ACOMO_OPENAPI_PATH` unset to use the bundled `openapi.json`.
 
 ## Architecture
 
