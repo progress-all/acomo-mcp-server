@@ -6,14 +6,16 @@ export async function acomoFetch(path: string, init?: RequestInit) {
   const base = cfg.baseUrl.replace(/\/$/, "");
   const joined = `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   const url = joined;
-  const headers = {
+  const headers: Record<string, string> = {
     ...(init?.headers as Record<string, string>),
-    Authorization: cfg.token
-      ? `Bearer ${cfg.token}`
-      : (init?.headers as any)?.Authorization,
-    "x-tenant-id": cfg.tenantId,
     "Content-Type": "application/json",
   };
+  if (cfg.token) {
+    headers["Authorization"] = `Bearer ${cfg.token}`;
+  }
+  if (cfg.tenantId) {
+    headers["x-tenant-id"] = cfg.tenantId;
+  }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), cfg.requestTimeoutMs);
   try {

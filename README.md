@@ -2,19 +2,21 @@
 
 acomo API をツールから扱えるようにする MCP (Model Context Protocol) サーバです。stdio トランスポートで動作します。OpenAPI に基づく operation 一覧やスキーマ参照、リクエスト雛形生成、API 呼び出し（問い合わせ）も行えます。
 
-## 環境変数
+## このサーバが提供するツールの種類
 
-- `ACOMO_API_BASE`（既定: `https://acomo.app`）
-- `ACOMO_TENANT_ID`（必須）
-- `ACOMO_ACCESS_TOKEN`（任意: Bearer トークン）
-- `ACOMO_ENABLE_MUTATION_TOOLS`（既定: `false`）
-- `ACOMO_REQUEST_TIMEOUT_MS`（既定: `30000`）
-- `ACOMO_MAX_RETRIES`（既定: `2`）
-- `ACOMO_OPENAPI_PATH`（例: `/absolute/path/to/repo/openapi.json`）
+acomo MCP は、用途に応じて次の2種類のツールを提供します。
+
+- OpenAPI仕様に基づくAPIドキュメント応答ツール（仕様の検索・要約・雛形生成・Q&A／APIコールは行わない）
+  - `listOperations`, `describeOperation`, `operationSchemas`, `generateRequestTemplate`, `listComponents`, `describeComponent`
+  - 認証や追加設定は不要です。
+
+- OpenAPI仕様に基づくAPIコールツール（operation を実行）
+  - `callOperation`
+  - 認証のため環境変数 `ACOMO_TENANT_ID` と `ACOMO_ACCESS_TOKEN` の設定が必要です。
 
 ## MCP クライアント設定例（推奨: Docker）
 
-以下は `mcpServers` 設定です。
+以下は `mcpServers` 設定です（API仕様ドキュメント応答用途の例）。
 
 ```json
 {
@@ -23,9 +25,6 @@ acomo API をツールから扱えるようにする MCP (Model Context Protocol
       "command": "docker",
       "args": [
         "run", "-i", "--rm",
-        "-e", "ACOMO_API_BASE=https://acomo.app",
-        "-e", "ACOMO_TENANT_ID=<tenant-id>",
-        "-e", "ACOMO_ACCESS_TOKEN=<access-token-optional>",
         "ghcr.io/progress-all/acomo-mcp-server:latest"
       ]
     }
@@ -33,7 +32,32 @@ acomo API をツールから扱えるようにする MCP (Model Context Protocol
 }
 ```
 
-## 代替: ソースから実行する場合（git clone → 実行）
+### OpenAPI仕様に基づくAPIコールに必要な追加環境変数（`callOperation`）
+
+APIコールツールを使う場合は、次の環境変数が必要です。
+
+- `ACOMO_TENANT_ID`
+- `ACOMO_ACCESS_TOKEN`
+
+Docker の設定例（上の応答用途の例に追記する形）:
+
+```json
+{
+  "mcpServers": {
+    "acomo": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "ACOMO_TENANT_ID=<tenant-id>",
+        "-e", "ACOMO_ACCESS_TOKEN=<access-token>",
+        "ghcr.io/progress-all/acomo-mcp-server:latest"
+      ]
+    }
+  }
+}
+```
+
+## 代替: GitHub からクローンして実行する場合（APIコール例）
 
 Node.js 18+（推奨: 20+）
 
@@ -46,7 +70,7 @@ Node.js 18+（推奨: 20+）
    npm run build
    ```
 
-2. `mcpServers` 設定（Node 実行）
+2. `mcpServers` 設定（Node 実行・OpenAPI仕様に基づくAPIコールの例）
 
    ```json
    {
@@ -54,11 +78,11 @@ Node.js 18+（推奨: 20+）
        "acomo": {
          "command": "node",
          "args": ["/absolute/path/to/repo/dist/server.js"],
-         "env": {
-           "ACOMO_API_BASE": "https://acomo.app",
-           "ACOMO_TENANT_ID": "<tenant-id>",
-           "ACOMO_ACCESS_TOKEN": "<access-token-optional>"
-         }
+           "env": {
+             "ACOMO_OPENAPI_PATH": "/absolute/path/to/repo/openapi.json",
+             "ACOMO_TENANT_ID": "<tenant-id>",
+             "ACOMO_ACCESS_TOKEN": "<access-token>"
+           }
        }
      }
    }
@@ -83,3 +107,13 @@ Node.js 18+（推奨: 20+）
 ## ライセンス
 
 MIT License. 詳細は `LICENSE` を参照してください。
+
+## 環境変数
+
+| 変数名 | 必須/任意 | 既定値 | 用途/期待される値 |
+| --- | --- | --- | --- |
+| `ACOMO_TENANT_ID` | APIコール時に必須 | なし | acomo テナントID。`callOperation` で `x-tenant-id` ヘッダとして送信されます。例: `acomo-example` |
+| `ACOMO_ACCESS_TOKEN` | APIコール時に必須 | なし | Bearer アクセストークン。`callOperation` 時に `Authorization: Bearer <token>` を送信します。 |
+| `ACOMO_API_BASE` | 任意 | `https://acomo.app` | API のベースURL。通常は変更不要。自前環境やローカル検証時のみ上書きしてください。例: `http://localhost:3000` |
+| `ACOMO_OPENAPI_PATH` | 任意 | リポジトリ同梱の `openapi.json` | 読み込む OpenAPI 仕様ファイルのパス。通常は変更不要。 |
+| `ACOMO_REQUEST_TIMEOUT_MS` | 任意 | `30000` | リクエストタイムアウト（ミリ秒）。 |

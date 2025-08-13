@@ -6,6 +6,7 @@ import {
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { acomoFetch } from "./shared/http.js";
+import { getConfig } from "./shared/config.js";
 import {
   buildRequestTemplate,
   buildUrlForOpenApiPath,
@@ -180,6 +181,21 @@ async function main() {
       query?: Record<string, unknown>;
       body?: unknown;
     }) => {
+      const cfg = getConfig();
+      const missingVars: string[] = [];
+      if (!cfg.tenantId) missingVars.push("ACOMO_TENANT_ID");
+      if (!cfg.token) missingVars.push("ACOMO_ACCESS_TOKEN");
+      if (missingVars.length) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `環境変数が未設定のため実行できません: ${missingVars.join(", ")}`,
+            },
+          ],
+          isError: true,
+        };
+      }
       const op = await findOperationById(operationId);
       if (!op)
         return {
