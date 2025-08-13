@@ -51,13 +51,13 @@ For standalone repository usage, always set `ACOMO_OPENAPI_PATH` to the absolute
 ### MCP Tools Provided
 
 1. **health**: Simple health check endpoint
-2. **listOperations**: Lists all available OpenAPI operations
-3. **describeOperation**: Gets detailed info for a specific operationId
-4. **operationSchemas**: Extracts parameters/requestBody/responses schemas
-5. **generateRequestTemplate**: Creates request templates with placeholders
+2. **listApis**: Lists all available OpenAPI APIs
+3. **describeApi**: Gets detailed info for a specific operationId
+4. **apiSchemas**: Extracts parameters/requestBody/responses schemas
+5. **generateApiRequestTemplate**: Creates request templates with placeholders
 6. **listComponents**: Lists OpenAPI component schemas
 7. **describeComponent**: Gets JSON schema for specific components
-8. **callOperation**: Executes API calls with path/query/body parameters
+8. **callApi**: Executes API calls with path/query/body parameters
 
 ### MCP Resources Provided
 

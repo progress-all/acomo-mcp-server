@@ -9,7 +9,6 @@ import { acomoFetch } from "./shared/http.js";
 import { getConfig } from "./shared/config.js";
 import {
   buildRequestTemplate,
-  buildUrlForOpenApiPath,
   findOperationById,
   getComponentSchema,
   getOperationSchemas,
@@ -33,10 +32,10 @@ async function main() {
   );
 
   server.registerTool(
-    "listOperations",
+    "listApis",
     {
-      title: "List OpenAPI operations",
-      description: "OpenAPIのoperation一覧を返す",
+      title: "List APIs",
+      description: "acomoのAPI一覧を返す",
       inputSchema: {},
     },
     async () => ({
@@ -45,9 +44,9 @@ async function main() {
   );
 
   server.registerTool(
-    "describeOperation",
+    "describeApi",
     {
-      title: "Describe operation",
+      title: "Describe API",
       description: "operationIdの詳細（paths/method/要約/原文）を返す",
       inputSchema: { operationId: z.string() },
     },
@@ -82,9 +81,9 @@ async function main() {
   );
 
   server.registerTool(
-    "operationSchemas",
+    "apiSchemas",
     {
-      title: "Operation schemas",
+      title: "API schemas",
       description: "operationIdからparameters/requestBody/responsesを抜粋",
       inputSchema: { operationId: z.string() },
     },
@@ -104,9 +103,9 @@ async function main() {
   );
 
   server.registerTool(
-    "generateRequestTemplate",
+    "generateApiRequestTemplate",
     {
-      title: "Generate request template",
+      title: "Generate API request template",
       description: "operationIdからpath/query/body雛形を生成",
       inputSchema: { operationId: z.string() },
     },
@@ -127,42 +126,10 @@ async function main() {
   );
 
   server.registerTool(
-    "listComponents",
+    "callApi",
     {
-      title: "List components",
-      description: "OpenAPI components.schemas の一覧を返す",
-      inputSchema: {},
-    },
-    async () => ({
-      content: [{ type: "text", text: JSON.stringify(await listComponents()) }],
-    })
-  );
-
-  server.registerTool(
-    "describeComponent",
-    {
-      title: "Describe component",
-      description: "指定schema名の詳細（JSON Schema）を返す",
-      inputSchema: { name: z.string() },
-    },
-    async ({ name }: { name: string }) => {
-      const schema = await getComponentSchema(name);
-      if (!schema)
-        return {
-          content: [{ type: "text", text: `Unknown component: ${name}` }],
-          isError: true,
-        };
-      return {
-        content: [{ type: "text", text: JSON.stringify(schema, null, 2) }],
-      };
-    }
-  );
-
-  server.registerTool(
-    "callOperation",
-    {
-      title: "Call operation",
-      description: "operationIdを指定してAPIを呼び出す（検証最小限）",
+      title: "Call API",
+      description: "operationIdを指定してAPIを呼び出す",
       inputSchema: {
         operationId: z.string(),
         pathParams: z.record(z.any()).optional(),
@@ -228,13 +195,48 @@ async function main() {
     }
   );
 
+  
+
+  server.registerTool(
+    "listComponents",
+    {
+      title: "List components",
+      description: "acomoのAPIスキーマ（components.schemas）の一覧を返す",
+      inputSchema: {},
+    },
+    async () => ({
+      content: [{ type: "text", text: JSON.stringify(await listComponents()) }],
+    })
+  );
+
+  server.registerTool(
+    "describeComponent",
+    {
+      title: "Describe component",
+      description: "指定schema名の詳細（JSON Schema）を返す",
+      inputSchema: { name: z.string() },
+    },
+    async ({ name }: { name: string }) => {
+      const schema = await getComponentSchema(name);
+      if (!schema)
+        return {
+          content: [{ type: "text", text: `Unknown component: ${name}` }],
+          isError: true,
+        };
+      return {
+        content: [{ type: "text", text: JSON.stringify(schema, null, 2) }],
+      };
+    }
+  );
+
+
   // ----- Resources -----
   server.registerResource(
     "openapi",
     new ResourceTemplate("openapi://acomo", { list: undefined }),
     {
-      title: "acomo OpenAPI",
-      description: "acomo OpenAPI specification",
+      title: "acomo API仕様",
+      description: "acomo API仕様（JSON）",
       mimeType: "application/json",
     },
     async (uri: URL) => {
