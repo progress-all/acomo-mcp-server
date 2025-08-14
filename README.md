@@ -1,17 +1,17 @@
 # acomo-mcp-server
 
-acomo API をツールから扱えるようにする MCP (Model Context Protocol) サーバです。stdio トランスポートで動作します。OpenAPI に基づく API 一覧やスキーマ参照、リクエスト雛形生成、API 呼び出し（問い合わせ）も行えます。
+acomo API をツールから扱えるようにする MCP (Model Context Protocol) サーバです。stdio トランスポートで動作します。acomo の OpenAPI に基づく API 一覧やスキーマ参照、リクエスト雛形生成、API 呼び出し（問い合わせ）も行えます。
 
 ## このサーバが提供するツールの種類
 
 acomo MCP は、用途に応じて次の2種類のツールを提供します。
 
 - OpenAPI仕様に基づくAPIドキュメント応答ツール（仕様の検索・要約・雛形生成・Q&A／APIコールは行わない）
-  - `listApis`, `describeApi`, `apiSchemas`, `generateApiRequestTemplate`, `listComponents`, `describeComponent`
+  - `list_apis`, `describe_api`, `api_schemas`, `generate_request_template`, `list_components`, `describe_component`
   - 認証や追加設定は不要です。
 
 - OpenAPI仕様に基づくAPIコールツール（API を実行）
-  - `callApi`
+  - `call_api`
   - 認証のため環境変数 `ACOMO_TENANT_ID` と `ACOMO_ACCESS_TOKEN` の設定が必要です。
 
 ## MCP クライアント設定例（推奨: Docker）
@@ -40,7 +40,7 @@ acomo MCP は、用途に応じて次の2種類のツールを提供します。
 docker pull ghcr.io/progress-all/acomo-mcp-server:latest
 ```
 
-次回の起動（`docker run`）から新しいイメージが使われます。固定タグ（例: `vX.Y.Z`）を使っている場合は、そのタグを指定して pull してください。
+注: 既に起動中のコンテナは自動では更新されません。pull 後は旧コンテナを停止・削除して、改めて起動してください。
 
 ### OpenAPI仕様に基づくAPIコールに必要な追加環境変数（`callApi`）
 
@@ -101,17 +101,21 @@ Node.js 18+（推奨: 20+）
 ## 提供ツール（Tools）
 
 - `health`: ヘルスチェック
-- `listApis`: OpenAPI の API 一覧
-- `describeApi`: 指定 `operationId` の詳細
-- `apiSchemas`: `parameters` / `requestBody` / `responses` の抜粋
-- `generateApiRequestTemplate`: パラメータ・ボディの雛形生成
-- `listComponents`: `components.schemas` の一覧
-- `describeComponent`: 指定スキーマの JSON Schema
-- `callApi`: 指定 `operationId` で API 呼び出し
+- `list_apis`: OpenAPI の API 一覧
+- `describe_api`: 指定 `operationId` の詳細（`method`/`path`/`summary`/`raw` に加え、`baseUrlExample` と `completeUrl` を含みます）
+- `api_schemas`: `parameters` / `requestBody` / `responses` の抜粋
+- `generate_request_template`: パラメータ・ボディの雛形生成（`pathParams`/`query`/`body` のスケルトン）
+- `list_components`: `components.schemas` の一覧
+- `describe_component`: 指定スキーマの JSON Schema
+- `call_api`: 指定 `operationId` で API 呼び出し（必要に応じて `pathParams`/`query`/`body` を受け付けます）
+
+## 提供プロンプト（Prompts）
+
+- `guide`: acomo の前提と MCP の使い方をまとめたガイドを、`acomo://guide` リソースとともに返します（クライアントが MCP Prompts に対応している場合に利用可能）。
 
 ## 提供リソース（Resources）
 
-- `guide://acomo`: acomo MCP ガイド（必読）: 開発の前提・認証・MCPの使い方の要点（text/markdown）
+- `acomo://guide`: acomo MCP ガイド: 開発の前提・認証・MCPの使い方の要点（text/markdown）
 
 ## 使い方の例
 
@@ -135,6 +139,6 @@ MIT License. 詳細は `LICENSE` を参照してください。
 | --- | --- | --- | --- |
 | `ACOMO_TENANT_ID` | APIコール時に必須 | なし | acomo テナントID。`callApi` で `x-tenant-id` ヘッダとして送信されます。例: `acomo-example` |
 | `ACOMO_ACCESS_TOKEN` | APIコール時に必須 | なし | Bearer アクセストークン。`callApi` 時に `Authorization: Bearer <token>` を送信します。 |
-| `ACOMO_API_BASE` | 任意 | `https://acomo.app` | API のベースURL。通常は変更不要。自前環境やローカル検証時のみ上書きしてください。例: `http://localhost:3000` |
-| `ACOMO_OPENAPI_PATH` | 任意 | リポジトリ同梱の `openapi.json` | 読み込む OpenAPI 仕様ファイルのパス。通常は変更不要。 |
+| `ACOMO_API_BASE` | 任意 | `https://acomo.app` | API のベースURL（ドメインのみを指定してください。`/api/v1` 等のパスは含めない）。例: `http://localhost:3000` |
+| `ACOMO_OPENAPI_PATH` | 任意 | 同梱 `openapi.json`（Docker イメージ内は `/app/openapi.json`） | 読み込む OpenAPI 仕様ファイルのパス。通常は変更不要。 |
 | `ACOMO_REQUEST_TIMEOUT_MS` | 任意 | `30000` | リクエストタイムアウト（ミリ秒）。 |

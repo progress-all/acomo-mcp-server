@@ -32,7 +32,7 @@ async function main() {
   );
 
   server.registerTool(
-    "listApis",
+    "list_apis",
     {
       title: "List APIs",
       description: "acomoのAPI一覧を返す",
@@ -46,7 +46,7 @@ async function main() {
   );
 
   server.registerTool(
-    "describeApi",
+    "describe_api",
     {
       title: "Describe API",
       description: "operationIdの詳細（paths/method/要約/原文）を返す",
@@ -88,7 +88,7 @@ async function main() {
   );
 
   server.registerTool(
-    "apiSchemas",
+    "api_schemas",
     {
       title: "API schemas",
       description: "operationIdからparameters/requestBody/responsesを抜粋",
@@ -112,7 +112,7 @@ async function main() {
   );
 
   server.registerTool(
-    "generateApiRequestTemplate",
+    "generate_request_template",
     {
       title: "Generate API request template",
       description: "operationIdからpath/query/body雛形を生成",
@@ -137,7 +137,7 @@ async function main() {
   );
 
   server.registerTool(
-    "callApi",
+    "call_api",
     {
       title: "Call API",
       description: "operationIdを指定してAPIを呼び出す",
@@ -211,7 +211,7 @@ async function main() {
   server.registerPrompt(
     "guide",
     {
-      title: "acomo Implementation Assistant",
+      title: "guide",
       description: "Assists with design and implementation guided by the acomo API and principles.",
       argsSchema: {
         request: z.string().describe("User request message").optional(),
@@ -237,7 +237,7 @@ async function main() {
           },
           {
             role: "user",
-            content: { type: "resource", resource: { uri: "guide://acomo", text: guideText } },
+            content: { type: "resource", resource: { uri: "acomo://guide", text: guideText } },
           },
         ],
       };
@@ -245,7 +245,7 @@ async function main() {
   );
 
   server.registerTool(
-    "listComponents",
+    "list_components",
     {
       title: "List components",
       description: "acomoのAPIスキーマ（components.schemas）の一覧を返す",
@@ -259,7 +259,7 @@ async function main() {
   );
 
   server.registerTool(
-    "describeComponent",
+    "describe_component",
     {
       title: "Describe component",
       description: "指定schema名の詳細（JSON Schema）を返す",
@@ -284,7 +284,7 @@ async function main() {
   // ----- Resources -----
   server.registerResource(
     "acomo-guide",
-    new ResourceTemplate("guide://acomo", { list: undefined }),
+    new ResourceTemplate("acomo://guide", { list: undefined }),
     {
       title: "acomo MCP guide",
       description: "acomo開発の前提・認証・MCPの使い方の要点",
@@ -297,7 +297,7 @@ async function main() {
           contents: [{ uri: uri.href, mimeType: "text/markdown", text }],
         };
       } catch {
-        const fallback = `# acomo MCP ガイド\n\nこのドキュメントは、acomo MCP を使って acomo API を探索・呼び出す際に最低限必要な前提と手順をまとめたものです。\n\n## 認証とテナント\n- Authorization: Bearer <ACCESS_TOKEN>\n- x-tenant-id: <TENANT_ID>\n- 環境変数: \n  - ACOMO_TENANT_ID\n  - ACOMO_ACCESS_TOKEN\n  - (任意) ACOMO_API_BASE = https://acomo.app\n\n## MCP ツールの流れ\n1. listApis: 利用可能な operationId 一覧を取得\n2. describeApi: operationId ごとの詳細（method/path/summary/raw）を確認\n3. apiSchemas: parameters / requestBody / responses のスキーマを確認\n4. generateApiRequestTemplate: path/query/body の雛形を作成\n5. callApi: operationId とテンプレートを使って実行（要: 環境変数）\n\n## callApi の入力\n- pathParams: OpenAPI の {id} のようなパス変数を置換\n- query: URLSearchParams でエンコード（オブジェクトは JSON 文字列化）\n- body: JSON で送信\n\n## 実装上の約束事\n- OpenAPI の先頭パス (/api/v{n}) はそのまま使用\n- 失敗時はエラーメッセージとこのガイドを返す\n- ページネーションやフィルタは API ごとのスキーマに準拠\n\n## よくあるエラー\n- 環境変数未設定: ACOMO_TENANT_ID, ACOMO_ACCESS_TOKEN を設定\n- 不明な operationId: listApis で再確認\n\n## 参考\n- OpenAPI 自体はツール (listApis/describeApi/apiSchemas) から参照可能です。\n`;
+        const fallback = `# acomo MCP ガイド\n\nこのドキュメントは、acomo MCP を使って acomo API を探索・呼び出す際に最低限必要な前提と手順をまとめたものです。\n\n## 認証とテナント\n- Authorization: Bearer <ACCESS_TOKEN>\n- x-tenant-id: <TENANT_ID>\n- 環境変数: \n  - ACOMO_TENANT_ID\n  - ACOMO_ACCESS_TOKEN\n  - (任意) ACOMO_API_BASE = https://acomo.app\n\n## MCP ツールの流れ\n1. list_apis: 利用可能な operationId 一覧を取得\n2. describe_api: operationId ごとの詳細（method/path/summary/raw）を確認\n3. api_schemas: parameters / requestBody / responses のスキーマを確認\n4. generate_request_template: path/query/body の雛形を作成\n5. call_api: operationId とテンプレートを使って実行（要: 環境変数）\n\n## call_api の入力\n- pathParams: OpenAPI の {id} のようなパス変数を置換\n- query: URLSearchParams でエンコード（オブジェクトは JSON 文字列化）\n- body: JSON で送信\n\n## 実装上の約束事\n- OpenAPI の先頭パス (/api/v{n}) はそのまま使用\n- 失敗時はエラーメッセージとこのガイドを返す\n- ページネーションやフィルタは API ごとのスキーマに準拠\n\n## よくあるエラー\n- 環境変数未設定: ACOMO_TENANT_ID, ACOMO_ACCESS_TOKEN を設定\n- 不明な operationId: list_apis で再確認\n\n## 参考\n- OpenAPI 自体はツール (list_apis/describe_api/api_schemas) から参照可能です。\n`;
         return {
           contents: [
             { uri: uri.href, mimeType: "text/markdown", text: fallback },
