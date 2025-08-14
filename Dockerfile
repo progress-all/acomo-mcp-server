@@ -12,6 +12,7 @@ RUN npm ci
 COPY tsconfig.json ./
 COPY src ./src
 COPY openapi.json ./openapi.json
+COPY resources ./resources
 
 # Build
 RUN npm run build
@@ -28,6 +29,7 @@ RUN npm ci --omit=dev
 # Copy build artifacts and assets
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/openapi.json ./openapi.json
+COPY --from=builder /app/resources ./resources
 
 # Default OpenAPI path inside the image
 ENV ACOMO_OPENAPI_PATH=/app/openapi.json

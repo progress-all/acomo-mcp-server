@@ -59,8 +59,7 @@ When running from the repository, you can leave `ACOMO_OPENAPI_PATH` unset to us
 
 ### MCP Resources Provided
 
-- **openapi://acomo**: Full OpenAPI specification as JSON
-- **guide://auth**: Authentication setup guide in markdown
+- **guide://acomo**: Unified guide covering prerequisites, authentication, and MCP usage
 
 ### Key Technical Details
 

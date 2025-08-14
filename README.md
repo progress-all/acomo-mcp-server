@@ -111,8 +111,7 @@ Node.js 18+（推奨: 20+）
 
 ## 提供リソース（Resources）
 
-- `openapi://acomo`: OpenAPI 仕様全体（application/json）
-- `guide://auth`: 認証・ヘッダ設定の簡易ガイド（text/markdown）
+- `guide://acomo`: acomo MCP ガイド（必読）: 開発の前提・認証・MCPの使い方の要点（text/markdown）
 
 ## 使い方の例
 

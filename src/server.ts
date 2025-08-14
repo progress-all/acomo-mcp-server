@@ -5,6 +5,7 @@ import {
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import { readFile } from "fs/promises";
 import { acomoFetch } from "./shared/http.js";
 import { getConfig } from "./shared/config.js";
 import {
@@ -39,7 +40,9 @@ async function main() {
       inputSchema: {},
     },
     async () => ({
-      content: [{ type: "text", text: JSON.stringify(await listOperations()) }],
+      content: [
+        { type: "text", text: JSON.stringify(await listOperations()) },
+      ],
     })
   );
 
@@ -97,7 +100,9 @@ async function main() {
           isError: true,
         };
       return {
-        content: [{ type: "text", text: JSON.stringify(schemas, null, 2) }],
+        content: [
+          { type: "text", text: JSON.stringify(schemas, null, 2) },
+        ],
       };
     }
   );
@@ -120,7 +125,9 @@ async function main() {
         };
       const tmpl = buildRequestTemplate(schemas);
       return {
-        content: [{ type: "text", text: JSON.stringify(tmpl, null, 2) }],
+        content: [
+          { type: "text", text: JSON.stringify(tmpl, null, 2) },
+        ],
       };
     }
   );
@@ -205,7 +212,9 @@ async function main() {
       inputSchema: {},
     },
     async () => ({
-      content: [{ type: "text", text: JSON.stringify(await listComponents()) }],
+      content: [
+        { type: "text", text: JSON.stringify(await listComponents()) },
+      ],
     })
   );
 
@@ -224,7 +233,37 @@ async function main() {
           isError: true,
         };
       return {
-        content: [{ type: "text", text: JSON.stringify(schema, null, 2) }],
+        content: [
+          { type: "text", text: JSON.stringify(schema, null, 2) },
+        ],
+      };
+    }
+  );
+
+  // Server info for discoverability of resources
+  server.registerTool(
+    "serverInfo",
+    {
+      title: "Server info",
+      description: "サーバ/スペックのメタ情報: バージョン・OpenAPI概要・件数・主要リソース",
+      inputSchema: {},
+    },
+    async () => {
+      const spec = await loadOpenApi();
+      const ops = await listOperations();
+      const info = {
+        server: { name: "acomo-mcp", version: "0.1.0" },
+        openapi: {
+          version: spec.openapi ?? "unknown",
+          operations: ops.length,
+          components: Object.keys(spec.components?.schemas ?? {}).length,
+        },
+        resources: ["guide://acomo"],
+      };
+      return {
+        content: [
+          { type: "text", text: JSON.stringify(info, null, 2) },
+        ],
       };
     }
   );
@@ -232,40 +271,27 @@ async function main() {
 
   // ----- Resources -----
   server.registerResource(
-    "openapi",
-    new ResourceTemplate("openapi://acomo", { list: undefined }),
+    "acomo-guide",
+    new ResourceTemplate("guide://acomo", { list: undefined }),
     {
-      title: "acomo API仕様",
-      description: "acomo API仕様（JSON）",
-      mimeType: "application/json",
-    },
-    async (uri: URL) => {
-      const spec = await loadOpenApi();
-      return {
-        contents: [
-          {
-            uri: uri.href,
-            mimeType: "application/json",
-            text: JSON.stringify(spec, null, 2),
-          },
-        ],
-      };
-    }
-  );
-
-  server.registerResource(
-    "auth-guide",
-    new ResourceTemplate("guide://auth", { list: undefined }),
-    {
-      title: "acomo Auth guide",
-      description: "acomo認証・ヘッダ設定",
+      title: "acomo MCP guide",
+      description: "acomo開発の前提・認証・MCPの使い方の要点（必読）",
       mimeType: "text/markdown",
     },
     async (uri: URL) => {
-      const text = `acomo認証・ヘッダ設定:\n\n- Authorization: Bearer <ACCESS_TOKEN>\n- x-tenant-id: <TENANT_ID>\n\nNext.jsサーバ側例:\n\nconst headers = {\n  Authorization: 'Bearer ' + process.env.ACOMO_ACCESS_TOKEN,\n  'x-tenant-id': process.env.ACOMO_TENANT_ID,\n  'Content-Type': 'application/json',\n};\n`;
-      return {
-        contents: [{ uri: uri.href, mimeType: "text/markdown", text }],
-      };
+      try {
+        const text = await readFile(new URL("../resources/guide-acomo.md", import.meta.url), "utf-8");
+        return {
+          contents: [{ uri: uri.href, mimeType: "text/markdown", text }],
+        };
+      } catch {
+        const fallback = `# acomo MCP ガイド（必読）\n\nこのドキュメントは、acomo MCP を使って acomo API を探索・呼び出す際に最低限必要な前提と手順をまとめたものです。\n\n## 認証とテナント\n- Authorization: Bearer <ACCESS_TOKEN>\n- x-tenant-id: <TENANT_ID>\n- 環境変数: \n  - ACOMO_TENANT_ID\n  - ACOMO_ACCESS_TOKEN\n  - (任意) ACOMO_API_BASE = https://acomo.app\n\n## MCP ツールの流れ\n1. listApis: 利用可能な operationId 一覧を取得\n2. describeApi: operationId ごとの詳細（method/path/summary/raw）を確認\n3. apiSchemas: parameters / requestBody / responses のスキーマを確認\n4. generateApiRequestTemplate: path/query/body の雛形を作成\n5. callApi: operationId とテンプレートを使って実行（要: 環境変数）\n\n## callApi の入力\n- pathParams: OpenAPI の {id} のようなパス変数を置換\n- query: URLSearchParams でエンコード（オブジェクトは JSON 文字列化）\n- body: JSON で送信\n\n## 実装上の約束事\n- OpenAPI の先頭パス (/api/v{n}) はそのまま使用\n- 失敗時はエラーメッセージとこのガイドを返す\n- ページネーションやフィルタは API ごとのスキーマに準拠\n\n## よくあるエラー\n- 環境変数未設定: ACOMO_TENANT_ID, ACOMO_ACCESS_TOKEN を設定\n- 不明な operationId: listApis で再確認\n\n## 参考\n- OpenAPI 自体はツール (listApis/describeApi/apiSchemas) から参照可能です。\n`;
+        return {
+          contents: [
+            { uri: uri.href, mimeType: "text/markdown", text: fallback },
+          ],
+        };
+      }
     }
   );
 
