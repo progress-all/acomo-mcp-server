@@ -7,7 +7,8 @@ export type AcomoMcpConfig = {
 };
 
 export function getConfig(): AcomoMcpConfig {
-  const baseUrl = process.env.ACOMO_API_BASE ?? "https://acomo.app";
+  const baseUrlRaw = process.env.ACOMO_API_BASE ?? "https://acomo.app";
+  const baseUrl = baseUrlRaw.replace(/\/+$/, "");
   const tenantId = process.env.ACOMO_TENANT_ID;
   const token = process.env.ACOMO_ACCESS_TOKEN;
   const requestTimeoutMs = Number(

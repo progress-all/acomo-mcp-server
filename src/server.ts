@@ -45,8 +45,6 @@ async function main() {
     })
   );
 
-  // searchApis ツールは削除（不要のため）
-
   server.registerTool(
     "describeApi",
     {
@@ -63,6 +61,9 @@ async function main() {
           ],
           isError: true,
         };
+      const cfg = getConfig();
+      const base = cfg.baseUrl.replace(/\/$/, "");
+      const completeUrl = `${base}${op.path.startsWith("/") ? "" : "/"}${op.path}`;
       return {
         content: [
           {
@@ -73,6 +74,8 @@ async function main() {
                 method: op.method,
                 path: op.path,
                 summary: op.summary,
+                baseUrlExample: base,
+                completeUrl,
                 raw: op.raw,
               },
               null,
@@ -186,7 +189,6 @@ async function main() {
           encodeURIComponent(String(v))
         );
       }
-      // base + OpenAPI のパスをそのまま連結するため、OpenAPI の先頭 `/api/v{n}` はそのまま使用する。
       const normalizedPath = path;
       const qs = new URLSearchParams();
       if (query) {
@@ -207,15 +209,16 @@ async function main() {
 
   // ----- Prompts -----
   server.registerPrompt(
-    "acomo",
+    "guide",
     {
-      title: "",
-      description: "acomo API と思想に基づき、要件から最適な設計・実装支援を行います。",
-      argsSchema: {},
+      title: "acomo Implementation Assistant",
+      description: "Assists with design and implementation guided by the acomo API and principles.",
+      argsSchema: {
+        request: z.string().describe("User request message").optional(),
+      },
     },
-    async (args: { request?: string; context?: string } = {}, _extra) => {
+    async (args: { request?: string } = {}, _extra) => {
       const request = args.request?.trim();
-      const ctx = args.context?.trim();
       let guideText = "";
       try {
         guideText = await readFile(new URL("../resources/guide-acomo.md", import.meta.url), "utf-8");
@@ -223,16 +226,14 @@ async function main() {
         guideText = "acomo MCP ガイドを取得できませんでした。resources/guide-acomo.md を確認してください。";
       }
 
-      const header = request
-        ? `依頼: ${request}\n補足: ${ctx ?? "(なし)"}`
-        : "依頼: (未入力)";
+      const userText = request || "(no request provided)";
 
       return {
-        description: "acomo API/コンセプトに基づく実装支援",
+        description: "Implementation support based on acomo API and concepts",
         messages: [
           {
             role: "user",
-            content: { type: "text", text: header },
+            content: { type: "text", text: userText },
           },
           {
             role: "user",
@@ -279,8 +280,6 @@ async function main() {
     }
   );
 
-  // serverInfo ツールは削除（不要のため）
-
 
   // ----- Resources -----
   server.registerResource(
@@ -288,7 +287,7 @@ async function main() {
     new ResourceTemplate("guide://acomo", { list: undefined }),
     {
       title: "acomo MCP guide",
-      description: "acomo開発の前提・認証・MCPの使い方の要点（必読）",
+      description: "acomo開発の前提・認証・MCPの使い方の要点",
       mimeType: "text/markdown",
     },
     async (uri: URL) => {
@@ -298,7 +297,7 @@ async function main() {
           contents: [{ uri: uri.href, mimeType: "text/markdown", text }],
         };
       } catch {
-        const fallback = `# acomo MCP ガイド（必読）\n\nこのドキュメントは、acomo MCP を使って acomo API を探索・呼び出す際に最低限必要な前提と手順をまとめたものです。\n\n## 認証とテナント\n- Authorization: Bearer <ACCESS_TOKEN>\n- x-tenant-id: <TENANT_ID>\n- 環境変数: \n  - ACOMO_TENANT_ID\n  - ACOMO_ACCESS_TOKEN\n  - (任意) ACOMO_API_BASE = https://acomo.app\n\n## MCP ツールの流れ\n1. listApis: 利用可能な operationId 一覧を取得\n2. describeApi: operationId ごとの詳細（method/path/summary/raw）を確認\n3. apiSchemas: parameters / requestBody / responses のスキーマを確認\n4. generateApiRequestTemplate: path/query/body の雛形を作成\n5. callApi: operationId とテンプレートを使って実行（要: 環境変数）\n\n## callApi の入力\n- pathParams: OpenAPI の {id} のようなパス変数を置換\n- query: URLSearchParams でエンコード（オブジェクトは JSON 文字列化）\n- body: JSON で送信\n\n## 実装上の約束事\n- OpenAPI の先頭パス (/api/v{n}) はそのまま使用\n- 失敗時はエラーメッセージとこのガイドを返す\n- ページネーションやフィルタは API ごとのスキーマに準拠\n\n## よくあるエラー\n- 環境変数未設定: ACOMO_TENANT_ID, ACOMO_ACCESS_TOKEN を設定\n- 不明な operationId: listApis で再確認\n\n## 参考\n- OpenAPI 自体はツール (listApis/describeApi/apiSchemas) から参照可能です。\n`;
+        const fallback = `# acomo MCP ガイド\n\nこのドキュメントは、acomo MCP を使って acomo API を探索・呼び出す際に最低限必要な前提と手順をまとめたものです。\n\n## 認証とテナント\n- Authorization: Bearer <ACCESS_TOKEN>\n- x-tenant-id: <TENANT_ID>\n- 環境変数: \n  - ACOMO_TENANT_ID\n  - ACOMO_ACCESS_TOKEN\n  - (任意) ACOMO_API_BASE = https://acomo.app\n\n## MCP ツールの流れ\n1. listApis: 利用可能な operationId 一覧を取得\n2. describeApi: operationId ごとの詳細（method/path/summary/raw）を確認\n3. apiSchemas: parameters / requestBody / responses のスキーマを確認\n4. generateApiRequestTemplate: path/query/body の雛形を作成\n5. callApi: operationId とテンプレートを使って実行（要: 環境変数）\n\n## callApi の入力\n- pathParams: OpenAPI の {id} のようなパス変数を置換\n- query: URLSearchParams でエンコード（オブジェクトは JSON 文字列化）\n- body: JSON で送信\n\n## 実装上の約束事\n- OpenAPI の先頭パス (/api/v{n}) はそのまま使用\n- 失敗時はエラーメッセージとこのガイドを返す\n- ページネーションやフィルタは API ごとのスキーマに準拠\n\n## よくあるエラー\n- 環境変数未設定: ACOMO_TENANT_ID, ACOMO_ACCESS_TOKEN を設定\n- 不明な operationId: listApis で再確認\n\n## 参考\n- OpenAPI 自体はツール (listApis/describeApi/apiSchemas) から参照可能です。\n`;
         return {
           contents: [
             { uri: uri.href, mimeType: "text/markdown", text: fallback },
