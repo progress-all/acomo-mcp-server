@@ -209,16 +209,9 @@ async function main() {
   server.registerPrompt(
     "acomo",
     {
-      title: "acomo",
-      description:
-        "ガイドを読み込み、依頼内容からAPIを導出して雛形と手順を提示します。依頼未入力でも探索手順を案内します。",
-      argsSchema: {
-        request: z.string().describe("依頼内容（詳細設計/仕様でも可）").optional(),
-        context: z
-          .string()
-          .describe("補足（例: モデルID、制約、ロールなど）")
-          .optional(),
-      },
+      title: "",
+      description: "acomo API と思想に基づき、要件から最適な設計・実装支援を行います。",
+      argsSchema: {},
     },
     async (args: { request?: string; context?: string } = {}, _extra) => {
       const request = args.request?.trim();
@@ -230,25 +223,12 @@ async function main() {
         guideText = "acomo MCP ガイドを取得できませんでした。resources/guide-acomo.md を確認してください。";
       }
 
-      const synonyms = [
-        "開始/start", "保存/save", "送信/submit", "承認/approve", "取り戻し/revert",
-      ].join(", ");
-      const plan = [
-        "1) キーワード抽出（日本語/英語）",
-        "2) listApis で候補を絞り込み",
-        "3) describeApi / apiSchemas で確認",
-        "4) generateApiRequestTemplate で雛形化＆最小入力例",
-        "5) callApi で確認（不可ならHTTP例）",
-        "6) Next.js Route の骨子提示",
-        "7) WithNodeId は複数候補時。不足情報は短問合せ",
-      ].join("\n- ");
-
       const header = request
         ? `依頼: ${request}\n補足: ${ctx ?? "(なし)"}`
         : "依頼: (未入力)";
 
       return {
-        description: "acomo のガイドと、依頼ベース/探索ベースの進め方を示します",
+        description: "acomo API/コンセプトに基づく実装支援",
         messages: [
           {
             role: "user",
@@ -257,18 +237,6 @@ async function main() {
           {
             role: "user",
             content: { type: "resource", resource: { uri: "guide://acomo", text: guideText } },
-          },
-          {
-            role: "user",
-            content: {
-              type: "text",
-              text:
-                "方針:\n- " +
-                plan +
-                "\n\n同義語ヒント: " +
-                synonyms +
-                "\n\n制約:\n- operationId は既知と仮定しない。必ず listApis → describeApi / apiSchemas で検証\n- 入力例は apiSchemas に準拠。誤りがあれば修正案も提示\n- callApi が実行不可（環境変数未設定等）の場合は、HTTP リクエスト例と想定レスポンス例を提示",
-            },
           },
         ],
       };
