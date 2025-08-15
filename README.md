@@ -2,6 +2,10 @@
 
 acomo API をツールから扱えるようにする MCP (Model Context Protocol) サーバです。stdio トランスポートで動作します。acomo の OpenAPI に基づく API 一覧やスキーマ参照、リクエスト雛形生成、API 呼び出し（問い合わせ）も行えます。
 
+<a href="https://glama.ai/mcp/servers/@progress-all/acomo-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@progress-all/acomo-mcp-server/badge" alt="ACOMO Server MCP server" />
+</a>
+
 ## このサーバが提供するツールの種類
 
 acomo MCP は、用途に応じて次の2種類のツールを提供します。
