@@ -2,6 +2,12 @@
 
 acomo API をツールから扱えるようにする MCP (Model Context Protocol) サーバです。stdio トランスポートで動作します。acomo の OpenAPI に基づく API 一覧やスキーマ参照、リクエスト雛形生成、API 呼び出し（問い合わせ）も行えます。
 
+## アーキテクチャ（MCP導入前/導入後）
+
+以下は MCP 導入前と導入後のイメージ図です。
+
+![MCP導入前/導入後の構成イメージ](docs/images/architecture.svg)
+
 ## このサーバが提供するツールの種類
 
 acomo MCP は、用途に応じて次の2種類のツールを提供します。
@@ -152,3 +158,9 @@ MIT License. 詳細は `LICENSE` を参照してください。
 | `ACOMO_API_BASE` | 任意 | `https://acomo.app` | API のベースURL（ドメインのみを指定してください。`/api/v1` 等のパスは含めない）。例: `http://localhost:3000` |
 | `ACOMO_OPENAPI_PATH` | 任意 | 同梱 `openapi.json`（Docker イメージ内は `/app/openapi.json`） | 読み込む OpenAPI 仕様ファイルのパス。通常は変更不要。 |
 | `ACOMO_REQUEST_TIMEOUT_MS` | 任意 | `30000` | リクエストタイムアウト（ミリ秒）。 |
+
+## 参考
+
+以下は、acomo 開発チームによる本 acomo MCP Server の開発背景と実装知見をまとめた技術ブログ記事です。
+
+- [acomo MCP Server — OpenAPIをMCPサーバー化しAIコーディング体験を高める](https://zenn.dev/acomo/articles/progress-acomo-2025-08-20-13-21-20)
