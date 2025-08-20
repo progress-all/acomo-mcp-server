@@ -233,11 +233,11 @@ async function main() {
         messages: [
           {
             role: "user",
-            content: { type: "text", text: userText },
+            content: { type: "resource", resource: { uri: "acomo://guide", text: guideText } },
           },
           {
             role: "user",
-            content: { type: "resource", resource: { uri: "acomo://guide", text: guideText } },
+            content: { type: "text", text: userText },
           },
         ],
       };
